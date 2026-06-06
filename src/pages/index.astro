@@ -1,17 +1,164 @@
 ---
+import Layout from '../layouts/Layout.astro';
+import IntakeForm from '../components/IntakeForm.astro';
+import JsonLd from '../components/JsonLd.astro';
 
+// Single-page high-converting homepage for KMX Media.
+// Designed around the intake form, not portfolio or generic services brochure.
+// All copy and structure grounded in "websites that do the work".
+// Schema via dedicated component (modeled on reference renderSchema patterns but static + no fakes).
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="KMX Media | Workflow websites, intake systems & AI agents for local businesses">
+  <JsonLd slot="head" />
+
+  <!-- Minimal operator nav -->
+  <nav class="border-b border-slate-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+    <div class="mx-auto flex max-w-5xl items-center justify-between px-5 py-4">
+      <div class="flex items-center gap-3">
+        <div class="h-6 w-6 rounded bg-slate-900"></div>
+        <span class="font-semibold tracking-tight">KMX Media</span>
+      </div>
+      <a href="#intake-form" class="rounded-full border border-slate-300 px-4 py-1.5 text-xs font-semibold tracking-widest transition hover:bg-slate-900 hover:text-white">START INTAKE</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="border-b border-slate-200 bg-white">
+    <div class="mx-auto max-w-5xl px-5 pb-16 pt-14 md:pt-20">
+      <div class="max-w-3xl">
+        <div class="inline-block rounded-full bg-slate-100 px-3 py-1 text-[10px] font-semibold tracking-[0.12em] text-slate-600">NOT A BROCHURE SITE. NOT A CMS.</div>
+        <h1 class="mt-4 text-balance text-5xl font-semibold tracking-tighter text-slate-950 md:text-6xl">
+          Websites that do the work.
+        </h1>
+        <p class="mt-5 max-w-2xl text-lg text-slate-600">
+          KMX Media builds intake systems, booking and quote flows, structured lead capture, customer follow-up automation, local SEO surfaces, and practical AI workflow agents for local businesses.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="#intake-form" class="inline-flex items-center justify-center rounded-2xl bg-slate-950 px-7 py-3 text-sm font-semibold text-white shadow-sm transition active:scale-[0.985] hover:bg-black">Tell us what your site needs to do</a>
+          <a href="#ai-agents" class="inline-flex items-center justify-center rounded-2xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-800 transition hover:border-slate-400">See how AI agents fit operations</a>
+        </div>
+        <p class="mt-4 text-xs text-slate-500">For operators who need the site to generate calls, bookings, and organized work — not just look good.</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Main intake form (the center of the page) -->
+    <section id="intake-form" class="mx-auto max-w-5xl px-5 py-12 md:py-16">
+      <div class="mx-auto max-w-2xl text-center">
+        <div class="text-xs font-semibold tracking-[0.1em] text-slate-500">QUALIFIED INTAKE</div>
+        <h2 class="mt-2 text-balance text-3xl font-semibold tracking-tight">What should the website actually accomplish?</h2>
+        <p class="mt-3 text-slate-600">Answer the outcome questions first. We design the system around the results you need, not around pages or themes.</p>
+      </div>
+
+      <div class="mx-auto mt-8 max-w-[820px]">
+        <IntakeForm />
+      </div>
+
+      <p class="mx-auto mt-6 max-w-prose text-center text-xs text-slate-500">
+        This is version one of the kmxmedia.com intake surface. Form handling is placeholder. See footer and README for exact status.
+      </p>
+    </section>
+
+    <!-- AI workflow agents (prominent, practical, grounded) -->
+    <section id="ai-agents" class="border-y border-slate-200 bg-white py-12 md:py-16">
+      <div class="mx-auto max-w-5xl px-5">
+        <div class="grid gap-8 md:grid-cols-12 md:items-center">
+          <div class="md:col-span-5">
+            <div class="text-xs font-semibold tracking-[0.1em] text-teal-700">OPERATIONS, NOT THEATRE</div>
+            <h2 class="mt-2 text-balance text-3xl font-semibold tracking-tight">AI agents that handle the busywork</h2>
+            <p class="mt-3 text-slate-600">We build agents that plug into the workflows your site already runs: intake, follow-up, qualification, and customer communication. They are scoped to concrete tasks so they reduce drag instead of creating new ones.</p>
+          </div>
+          <div class="md:col-span-7">
+            <ul class="grid gap-x-8 gap-y-4 text-sm md:grid-cols-2">
+              <li class="flex gap-3"><span class="mt-1 block h-1.5 w-1.5 shrink-0 rounded-full bg-teal-600"></span> Answer repetitive customer questions with accurate, updatable answers</li>
+              <li class="flex gap-3"><span class="mt-1 block h-1.5 w-1.5 shrink-0 rounded-full bg-teal-600"></span> Collect missing intake details before a human touches the lead</li>
+              <li class="flex gap-3"><span class="mt-1 block h-1.5 w-1.5 shrink-0 rounded-full bg-teal-600"></span> Draft follow-ups and reminders that stay in your voice and policy</li>
+              <li class="flex gap-3"><span class="mt-1 block h-1.5 w-1.5 shrink-0 rounded-full bg-teal-600"></span> Route leads to the right person or queue based on answers and availability</li>
+              <li class="flex gap-3"><span class="mt-1 block h-1.5 w-1.5 shrink-0 rounded-full bg-teal-600"></span> Prepare quotes or booking requests with the structured data already captured</li>
+              <li class="flex gap-3"><span class="mt-1 block h-1.5 w-1.5 shrink-0 rounded-full bg-teal-600"></span> Keep operational notes, customer context, and content updates organized</li>
+              <li class="flex gap-3 md:col-span-2"><span class="mt-1 block h-1.5 w-1.5 shrink-0 rounded-full bg-teal-600"></span> Reduce the admin hours spent on the same 20% of conversations and data entry</li>
+            </ul>
+            <p class="mt-5 text-xs text-slate-500">Agents are always paired with human oversight and clear escalation. They are not a replacement for your judgment or relationships.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Service model / outcome sections -->
+    <section class="mx-auto max-w-5xl px-5 py-12 md:py-16">
+      <div class="mx-auto max-w-2xl">
+        <div class="text-xs font-semibold tracking-[0.1em] text-slate-500">HOW WE ENGAGE</div>
+        <h2 class="mt-2 text-balance text-3xl font-semibold tracking-tight">Outcome-driven work, not deliverables</h2>
+        <p class="mt-3 text-slate-600">We organize projects around what the business actually needs the site (and its connected systems) to produce.</p>
+      </div>
+
+      <div class="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <!-- Card 1 -->
+        <div class="rounded-3xl border border-slate-200 bg-white p-6">
+          <div class="text-[10px] font-semibold tracking-widest text-slate-500">LAUNCH</div>
+          <h3 class="mt-2 text-xl font-semibold tracking-tight">Conversion homepage</h3>
+          <p class="mt-2 text-sm text-slate-600">A tight, high-signal homepage whose primary job is turning the right visitors into qualified leads or direct bookings. Strong outcome CTAs and the intake form live here.</p>
+          <p class="mt-4 text-xs text-slate-500">Typical first move for businesses with existing traffic that currently leaks.</p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="rounded-3xl border border-slate-200 bg-white p-6">
+          <div class="text-[10px] font-semibold tracking-widest text-slate-500">SYSTEM</div>
+          <h3 class="mt-2 text-xl font-semibold tracking-tight">Booking or quote intake</h3>
+          <p class="mt-2 text-sm text-slate-600">Multi-step forms that qualify before you spend time, show relevant options or pricing ranges, capture the structured data you actually need, and produce clean handoff to your team or calendar.</p>
+          <p class="mt-4 text-xs text-slate-500">Replaces email tennis and scattered form responses.</p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="rounded-3xl border border-slate-200 bg-white p-6">
+          <div class="text-[10px] font-semibold tracking-widest text-slate-500">LOCAL</div>
+          <h3 class="mt-2 text-xl font-semibold tracking-tight">GBP traffic → structured leads</h3>
+          <p class="mt-2 text-sm text-slate-600">Surfaces and flows that turn Google Business Profile and local search visitors into named, context-rich leads instead of anonymous calls or “send message” black holes.</p>
+          <p class="mt-4 text-xs text-slate-500">The difference between “we get views” and “we get bookable requests”.</p>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="rounded-3xl border border-slate-200 bg-white p-6">
+          <div class="text-[10px] font-semibold tracking-widest text-slate-500">AUTOMATION</div>
+          <h3 class="mt-2 text-xl font-semibold tracking-tight">AI agents in the workflow</h3>
+          <p class="mt-2 text-sm text-slate-600">Agents scoped to your actual operations: answering FAQs, completing partial intakes, drafting replies, preparing summaries, and keeping the small repetitive things from eating your day.</p>
+          <p class="mt-4 text-xs text-slate-500">Always reviewable. Always under your policies.</p>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="rounded-3xl border border-slate-200 bg-white p-6 md:col-span-2 lg:col-span-1">
+          <div class="text-[10px] font-semibold tracking-widest text-slate-500">PORTAL (WHEN USEFUL)</div>
+          <h3 class="mt-2 text-xl font-semibold tracking-tight">Customer-facing pages or self-serve</h3>
+          <p class="mt-2 text-sm text-slate-600">When the business case is clear: simple status views, reschedule or update flows, document collection, or “my requests” grids for repeat customers. Inspired by real customer self-serve patterns but built for your operation, not rides.</p>
+          <p class="mt-4 text-xs text-slate-500">Added only when it removes work for both sides.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Positioning closer -->
+    <section class="border-t border-slate-200 bg-slate-950 py-10 text-slate-200">
+      <div class="mx-auto max-w-5xl px-5 text-center">
+        <p class="mx-auto max-w-2xl text-sm">
+          We are not a creative agency selling websites as content. We are systems builders who make the website (and its connected agents) responsible for moving real work forward for local operators.
+        </p>
+        <div class="mt-4 text-[10px] tracking-[0.1em] text-slate-500">KMX MEDIA — NORTHFIELD / TWIN CITIES AREA</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-slate-200 bg-white py-8 text-xs text-slate-500">
+    <div class="mx-auto max-w-5xl px-5">
+      <div class="flex flex-col justify-between gap-y-3 md:flex-row md:items-center">
+        <div>
+          © KMX Media. This is the first real version of the kmxmedia.com homepage.
+          <span class="block md:inline">Built as a standalone static site (no CMS).</span>
+        </div>
+        <div class="text-[10px]">
+          Form and data handling are placeholder in this version. See README.md in the repo for current status, verification steps, and the exact plan to wire a real endpoint.
+        </div>
+      </div>
+    </div>
+  </footer>
+</Layout>

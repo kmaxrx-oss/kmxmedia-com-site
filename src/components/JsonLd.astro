@@ -1,0 +1,140 @@
+---
+// JSON-LD schema for KMX Media homepage.
+// Generated following patterns inspected in reference (LOCAL_MIRROR_SCHEMA):
+// - PHP wp_head -> renderSchema() emitting <script type="application/ld+json"> wp_json_encode(@graph)
+// - Types observed: Organization, LocalBusiness (adapted), WebSite, WebPage, FAQPage, BreadcrumbList (simplified here).
+// Adapted for this business: Organization + WebSite + WebPage + FAQPage + Service entries.
+// NO fake ratings, NO aggregateRating, NO reviews, NO invented offers, NO fake service areas.
+// All business details are either verified-minimal or clearly marked PLACEHOLDER.
+// Evidence: RideBookingPageShell.php:52 (renderSchema), 64-174 (@graph), 174 (script + flags).
+
+const siteUrl = 'https://kmxmedia.com';
+const orgId = `${siteUrl}/#organization`;
+const siteId = `${siteUrl}/#website`;
+const pageId = `${siteUrl}/#webpage`;
+const faqId = `${siteUrl}/#faq`;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': orgId,
+      name: 'KMX Media',
+      url: siteUrl,
+      description:
+        'KMX Media builds workflow websites, booking and intake systems, local SEO surfaces, and practical AI workflow agents for local businesses. Websites that capture leads, book work, follow up, and reduce admin drag.',
+      // PLACEHOLDER: add real logo, address, telephone, email, sameAs (GBP, LinkedIn) when verified.
+      // Do not invent serviceArea or geo.
+    },
+    {
+      '@type': 'WebSite',
+      '@id': siteId,
+      url: siteUrl,
+      name: 'KMX Media',
+      publisher: {
+        '@id': orgId,
+      },
+    },
+    {
+      '@type': 'WebPage',
+      '@id': pageId,
+      url: siteUrl,
+      name: 'KMX Media | Workflow websites, intake systems & AI agents for local businesses',
+      isPartOf: {
+        '@id': siteId,
+      },
+      about: {
+        '@id': orgId,
+      },
+      description:
+        'Not brochure sites. We build sites that do the work: structured lead capture, booking and quote intake, customer follow-up automation, and AI agents grounded in real operations.',
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': faqId,
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: 'Is this a WordPress or CMS site?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'No. KMX Media builds standalone workflow systems and custom frontends. We do not sell themes, page builders, or generic CMS installs.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'What does an AI workflow agent actually do?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Practical agents that answer common customer questions, collect missing intake details, draft follow-ups, route leads to the right person, prepare quotes or booking summaries, and keep operational data organized. They reduce repetitive admin without replacing judgment.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'How is the intake form different from a normal contact form?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'It asks what the business needs the website to accomplish (calls, bookings, quotes, intake, follow-up, AI help, SEO). We qualify the outcome before discussing design or tech. This produces better project scope and faster launches.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Do you only work with local businesses?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Our positioning and examples focus on local operators who need Google Business Profile traffic, phone calls, appointments, and structured follow-up to convert. The same patterns apply more broadly.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'What happens after I submit the form?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'This is currently a placeholder form (see site footer and README). When connected, submissions will create a structured lead record. You will receive confirmation and a follow-up from the team within one business day to scope the work.',
+          },
+        },
+      ],
+    },
+    // Service entries for the core offerings (no fake pricing/availability).
+    {
+      '@type': 'Service',
+      name: 'Conversion Homepage Launch',
+      provider: {
+        '@id': orgId,
+      },
+      description:
+        'A focused homepage that turns visitors into structured leads or bookings instead of just informing them. Includes clear outcome CTAs and intake surfaces.',
+    },
+    {
+      '@type': 'Service',
+      name: 'Booking and Quote Intake Systems',
+      provider: {
+        '@id': orgId,
+      },
+      description:
+        'Multi-step qualification forms, availability-aware booking flows, quote request pipelines, and confirmation + customer self-serve views.',
+    },
+    {
+      '@type': 'Service',
+      name: 'GBP Traffic to Structured Leads',
+      provider: {
+        '@id': orgId,
+      },
+      description:
+        'Surfaces and flows that convert Google Business Profile and local search traffic into named leads with context, rather than generic inquiries.',
+    },
+    {
+      '@type': 'Service',
+      name: 'AI Workflow Agents for Operations',
+      provider: {
+        '@id': orgId,
+      },
+      description:
+        'Agents that handle repetitive customer questions, complete partial intakes, draft follow-ups, route leads, prepare operational summaries, and reduce admin time on routine communication.',
+    },
+  ],
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema, null, 0)} />

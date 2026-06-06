@@ -1,0 +1,307 @@
+---
+// Main intake form for KMX Media.
+// Explicit implementation per requirements.
+// - Semantic HTML first (labels, fieldsets, proper types, required where appropriate).
+// - Asks "what the website should do" via multi-select checkboxes (not generic contact).
+// - All fields from contract: business name, contact, email, phone, website/GBP, business type,
+//   what-should-do options, current problem, urgency, budget (optional), notes.
+// - On submit: placeholder flow ONLY. Does not claim transmission.
+// - JS: collects payload, shows success state with echoed data, provides "copy" for manual follow-up.
+// - Clear visual + text that this is a v1 placeholder (see README for backend plan).
+// Evidence labels in comments and UI: CONTEXT_DERIVED, LOCAL_MIRROR (form patterns from BookingShortcode stepped qualification + review before commit).
+
+const whatShouldDoOptions = [
+  'Get more calls',
+  'Book appointments or rides',
+  'Collect quote requests',
+  'Sell services',
+  'Organize customer intake',
+  'Automate follow-up',
+  'Add AI agent workflow help',
+  'Improve local SEO / GBP conversion',
+];
+
+const urgencyOptions = [
+  'ASAP (this week or next)',
+  'Within 30 days',
+  'This quarter',
+  'Exploring options / no hard date',
+];
+---
+
+<form id="intake-form" class="space-y-8" novalidate>
+  <!-- Status banner (updated by JS) -->
+  <div id="form-status" class="hidden rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+    <!-- populated by script -->
+  </div>
+
+  <!-- Section: What the website must do (core qualification, early) -->
+  <fieldset class="rounded-3xl border border-slate-200 bg-white p-6 md:p-8">
+    <legend class="px-1 text-sm font-semibold tracking-[0.08em] text-slate-500">1. WHAT THE WEBSITE NEEDS TO DO</legend>
+    <p class="mt-1 text-sm text-slate-600">Select all that apply. This is the most important part of the intake.</p>
+
+    <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+      {
+        whatShouldDoOptions.map((opt, i) => (
+          <label class="flex cursor-pointer items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-3 transition hover:border-slate-300">
+            <input
+              type="checkbox"
+              name="website_do[]"
+              value={opt}
+              class="mt-1 h-4 w-4 accent-slate-900"
+            />
+            <span class="text-sm leading-tight text-slate-800">{opt}</span>
+          </label>
+        ))
+      }
+    </div>
+    <p class="mt-3 text-[11px] text-slate-500">Most serious projects need 2–4 of these working together.</p>
+  </fieldset>
+
+  <!-- Business + Contact -->
+  <fieldset class="rounded-3xl border border-slate-200 bg-white p-6 md:p-8">
+    <legend class="px-1 text-sm font-semibold tracking-[0.08em] text-slate-500">2. YOUR BUSINESS</legend>
+
+    <div class="mt-4 grid grid-cols-1 gap-x-4 gap-y-5 md:grid-cols-2">
+      <div>
+        <label for="business_name" class="block text-sm font-medium text-slate-700">Business name <span class="text-red-600">*</span></label>
+        <input id="business_name" name="business_name" type="text" required autocomplete="organization"
+               class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm placeholder:text-slate-400 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500" placeholder="Acme Plumbing LLC" />
+      </div>
+
+      <div>
+        <label for="business_type" class="block text-sm font-medium text-slate-700">Business type</label>
+        <input id="business_type" name="business_type" type="text" autocomplete="off"
+               class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm placeholder:text-slate-400 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500" placeholder="Plumbing / HVAC / Law firm / Clinic / Shuttle / ..." />
+      </div>
+
+      <div>
+        <label for="contact_name" class="block text-sm font-medium text-slate-700">Contact name <span class="text-red-600">*</span></label>
+        <input id="contact_name" name="contact_name" type="text" required autocomplete="name"
+               class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm placeholder:text-slate-400 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500" placeholder="Alex Rivera" />
+      </div>
+
+      <div>
+        <label for="email" class="block text-sm font-medium text-slate-700">Email <span class="text-red-600">*</span></label>
+        <input id="email" name="email" type="email" required autocomplete="email"
+               class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm placeholder:text-slate-400 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500" placeholder="alex@acme.com" />
+      </div>
+
+      <div>
+        <label for="phone" class="block text-sm font-medium text-slate-700">Phone</label>
+        <input id="phone" name="phone" type="tel" autocomplete="tel"
+               class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm placeholder:text-slate-400 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500" placeholder="(507) 555-0192" />
+      </div>
+
+      <div>
+        <label for="website_or_gbp" class="block text-sm font-medium text-slate-700">Current website or Google Business Profile</label>
+        <input id="website_or_gbp" name="website_or_gbp" type="url" autocomplete="url"
+               class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm placeholder:text-slate-400 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500" placeholder="https://acmeplumbing.com or GBP link" />
+      </div>
+    </div>
+  </fieldset>
+
+  <!-- Problem + Urgency + Budget + Notes -->
+  <fieldset class="rounded-3xl border border-slate-200 bg-white p-6 md:p-8">
+    <legend class="px-1 text-sm font-semibold tracking-[0.08em] text-slate-500">3. THE BOTTLENECK + TIMING</legend>
+
+    <div class="mt-4 space-y-5">
+      <div>
+        <label for="current_problem" class="block text-sm font-medium text-slate-700">What is the current problem or bottleneck? <span class="text-red-600">*</span></label>
+        <textarea id="current_problem" name="current_problem" required rows={4}
+                  class="mt-1 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm placeholder:text-slate-400 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500"
+                  placeholder="We get calls from the website but they are vague. Half the leads are tire-kickers. We spend evenings chasing details that should have been captured up front."></textarea>
+        <p class="mt-1 text-xs text-slate-500">Be specific. This drives the right scope.</p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div>
+          <label for="urgency" class="block text-sm font-medium text-slate-700">Desired launch urgency</label>
+          <select id="urgency" name="urgency" class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500">
+            <option value="">Select...</option>
+            {urgencyOptions.map(o => <option value={o}>{o}</option>)}
+          </select>
+        </div>
+
+        <div>
+          <label for="budget_range" class="block text-sm font-medium text-slate-700">Budget comfort range (optional)</label>
+          <select id="budget_range" name="budget_range" class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500">
+            <option value="">Prefer not to say yet</option>
+            <option value="under-4k">Under $4,000 (focused launch)</option>
+            <option value="4-8k">$4,000 – $8,000 (homepage + intake)</option>
+            <option value="8-15k">$8,000 – $15,000 (full system + AI starter)</option>
+            <option value="15k+">$15,000+ (multi-surface + agents + portal)</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label for="notes" class="block text-sm font-medium text-slate-700">Anything else we should know?</label>
+        <textarea id="notes" name="notes" rows={3}
+                  class="mt-1 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm placeholder:text-slate-400 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500"
+                  placeholder="We have an existing site on Squarespace. Two locations. We already get decent traffic from GBP but conversion is low."></textarea>
+      </div>
+    </div>
+  </fieldset>
+
+  <!-- Submit area -->
+  <div class="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+    <button
+      type="submit"
+      class="inline-flex items-center justify-center rounded-2xl bg-slate-900 px-8 py-3 text-sm font-semibold text-white shadow-sm transition active:scale-[0.985] hover:bg-black focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2"
+    >
+      Submit intake
+    </button>
+    <p class="text-xs text-slate-500 max-w-prose">
+      Placeholder only. No data leaves your browser until a real endpoint is wired. See the footer and README.
+    </p>
+  </div>
+
+  <!-- Success panel (shown by JS on placeholder submit) -->
+  <div id="success-panel" class="hidden rounded-3xl border border-emerald-200 bg-emerald-50 p-6 md:p-8">
+    <div class="flex items-start gap-3">
+      <div class="mt-0.5 text-emerald-600">✓</div>
+      <div class="flex-1">
+        <p class="font-semibold text-emerald-900">Intake captured (placeholder)</p>
+        <p class="mt-1 text-sm text-emerald-800">
+          This form is not yet connected to any backend, email, or CRM. Your responses are shown below for your records.
+          When the handler is live we will send a structured record and follow up within one business day.
+        </p>
+
+        <div class="mt-4">
+          <button type="button" id="copy-payload-btn"
+                  class="rounded-xl border border-emerald-300 bg-white px-4 py-1.5 text-xs font-medium text-emerald-900 hover:bg-emerald-100">
+            Copy payload as JSON
+          </button>
+          <button type="button" id="reset-form-btn"
+                  class="ml-2 rounded-xl px-4 py-1.5 text-xs font-medium text-emerald-900 underline-offset-2 hover:underline">
+            Start new intake
+          </button>
+        </div>
+
+        <pre id="payload-echo" class="mt-4 max-h-64 overflow-auto rounded-2xl bg-white p-4 text-[11px] leading-snug text-slate-700 ring-1 ring-inset ring-emerald-100"></pre>
+      </div>
+    </div>
+  </div>
+</form>
+
+<script>
+  // Explicit placeholder submit implementation.
+  // Does NOT pretend to send anywhere.
+  // Matches contract: "implement a safe placeholder submit flow and clearly document what remains."
+  // Inspiration from reference: late collection of contact after qualification + review step before commit (adapted to single visible form with strong first section).
+  // LOCAL_MIRROR / CONTEXT_DERIVED
+
+  const form = document.getElementById('intake-form') as HTMLFormElement | null;
+  const statusEl = document.getElementById('form-status') as HTMLDivElement | null;
+  const successPanel = document.getElementById('success-panel') as HTMLDivElement | null;
+  const payloadEcho = document.getElementById('payload-echo') as HTMLPreElement | null;
+  const copyBtn = document.getElementById('copy-payload-btn') as HTMLButtonElement | null;
+  const resetBtn = document.getElementById('reset-form-btn') as HTMLButtonElement | null;
+
+  let lastPayload: Record<string, unknown> | null = null;
+
+  function showStatus(msg: string, kind: 'warn' | 'error' = 'warn') {
+    if (!statusEl) return;
+    statusEl.textContent = msg;
+    statusEl.className = kind === 'error'
+      ? 'rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800'
+      : 'rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800';
+    statusEl.classList.remove('hidden');
+  }
+
+  function hideStatus() {
+    if (statusEl) statusEl.classList.add('hidden');
+  }
+
+  function collectPayload(f: HTMLFormElement): Record<string, unknown> {
+    const data = new FormData(f);
+    const payload: Record<string, unknown> = {};
+
+    // Simple fields
+    for (const [k, v] of data.entries()) {
+      if (k === 'website_do[]') {
+        if (!payload.website_do) payload.website_do = [];
+        (payload.website_do as string[]).push(String(v));
+      } else {
+        payload[k] = typeof v === 'string' ? v.trim() : v;
+      }
+    }
+
+    // Add client timestamp + note
+    payload.submitted_at = new Date().toISOString();
+    payload._note = 'PLACEHOLDER_SUBMIT — not transmitted. See kmxmedia-com-site README.';
+    return payload;
+  }
+
+  function validate(payload: Record<string, unknown>): string | null {
+    if (!payload.business_name) return 'Business name is required.';
+    if (!payload.contact_name) return 'Contact name is required.';
+    if (!payload.email) return 'Email is required.';
+    if (!payload.current_problem) return 'Please describe the current bottleneck.';
+    const goals = (payload.website_do as string[] | undefined) || [];
+    if (goals.length === 0) return 'Select at least one thing the website should accomplish.';
+    return null;
+  }
+
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      hideStatus();
+
+      const payload = collectPayload(form);
+      const err = validate(payload);
+      if (err) {
+        showStatus(err, 'error');
+        return;
+      }
+
+      lastPayload = payload;
+
+      // Show success (placeholder)
+      if (successPanel && payloadEcho) {
+        payloadEcho.textContent = JSON.stringify(payload, null, 2);
+        successPanel.classList.remove('hidden');
+        successPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      // Keep form visible but disabled-ish for review
+      form.querySelectorAll('input,select,textarea,button[type="submit"]').forEach((el) => {
+        (el as HTMLInputElement | HTMLButtonElement).disabled = true;
+      });
+
+      // Console for devs
+      // eslint-disable-next-line no-console
+      console.info('[KMX Intake Placeholder] Collected payload (NOT SENT):', payload);
+    });
+  }
+
+  if (copyBtn) {
+    copyBtn.addEventListener('click', async () => {
+      if (!lastPayload) return;
+      try {
+        await navigator.clipboard.writeText(JSON.stringify(lastPayload, null, 2));
+        const orig = copyBtn.textContent;
+        copyBtn.textContent = 'Copied!';
+        setTimeout(() => { if (copyBtn) copyBtn.textContent = orig || 'Copy payload as JSON'; }, 1400);
+      } catch {
+        alert('Copy failed — payload is in the pre block above. Select and copy manually.');
+      }
+    });
+  }
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      if (form) {
+        form.reset();
+        form.querySelectorAll('input,select,textarea,button[type="submit"]').forEach((el) => {
+          (el as HTMLInputElement | HTMLButtonElement).disabled = false;
+        });
+      }
+      if (successPanel) successPanel.classList.add('hidden');
+      if (statusEl) statusEl.classList.add('hidden');
+      lastPayload = null;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+</script>
