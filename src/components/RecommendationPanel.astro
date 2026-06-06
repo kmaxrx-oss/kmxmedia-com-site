@@ -1,0 +1,63 @@
+---
+interface Props {
+  variant: 'mobile' | 'desktop';
+}
+
+const { variant } = Astro.props;
+---
+
+<aside
+  class:list={[
+    'rounded-[1.6rem] border border-[#d4cab8] bg-[#22332d] p-5 text-[#fbfaf6] shadow-[0_20px_50px_rgba(34,51,45,0.18)]',
+    variant === 'mobile' ? 'lg:hidden' : 'hidden lg:sticky lg:top-6 lg:block',
+  ]}
+  data-plan-panel
+  aria-live="polite"
+  aria-atomic="false"
+>
+  <p class="text-xs font-black uppercase tracking-[0.16em] text-[#e0b08e]">Your plan so far</p>
+  <h3 class="mt-3 text-2xl font-black tracking-[-0.03em]" data-plan-heading>Your plan so far</h3>
+  <p class="mt-3 text-sm leading-6 text-[#dbe4df]" data-plan-summary>
+    Answer the questions and your recommended website structure will appear here.
+  </p>
+
+  <div class="mt-5">
+    <div class="h-2 overflow-hidden rounded-full bg-white/15">
+      <div class="h-full rounded-full bg-[#e0b08e] transition-all duration-300" style="width: 6%;" data-progress-bar></div>
+    </div>
+    <p class="mt-2 text-xs font-bold uppercase tracking-[0.12em] text-[#c9d4ce]" data-progress-label>
+      Progress: Step 1 of 18
+    </p>
+  </div>
+
+  <dl class="mt-6 space-y-4 text-sm">
+    <div>
+      <dt class="font-black text-[#fbfaf6]">Package direction</dt>
+      <dd class="mt-1 leading-6 text-[#dbe4df]" data-package-direction>Starter Workflow Homepage</dd>
+    </div>
+    <div>
+      <dt class="font-black text-[#fbfaf6]">Recommended starting structure</dt>
+      <dd class="mt-1 leading-6 text-[#dbe4df]" data-recommended-structure>
+        Homepage, services overview, local trust section, and customer-action path based on your selected goals.
+      </dd>
+    </div>
+    <div>
+      <dt class="font-black text-[#fbfaf6]">Selected outcomes</dt>
+      <dd class="mt-2 flex flex-wrap gap-2" data-outcome-chips>
+        <span class="rounded-full bg-white/10 px-3 py-1 text-xs text-[#dbe4df]">Waiting for outcomes</span>
+      </dd>
+    </div>
+    <div>
+      <dt class="font-black text-[#fbfaf6]">Triggered add-ons</dt>
+      <dd class="mt-2 flex flex-wrap gap-2" data-addon-chips>
+        <span class="rounded-full bg-white/10 px-3 py-1 text-xs text-[#dbe4df]">None yet</span>
+      </dd>
+    </div>
+    <div>
+      <dt class="font-black text-[#fbfaf6]">Launch readiness</dt>
+      <dd class="mt-1 leading-6 text-[#dbe4df]" data-launch-readiness>
+        Domain and launch window will appear after the core intent questions.
+      </dd>
+    </div>
+  </dl>
+</aside>

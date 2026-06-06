@@ -1,18 +1,79 @@
 ---
-// JSON-LD schema for KMX Media homepage.
-// Generated following patterns inspected in reference (LOCAL_MIRROR_SCHEMA):
-// - PHP wp_head -> renderSchema() emitting <script type="application/ld+json"> wp_json_encode(@graph)
-// - Types observed: Organization, LocalBusiness (adapted), WebSite, WebPage, FAQPage, BreadcrumbList (simplified here).
-// Adapted for this business: Organization + WebSite + WebPage + FAQPage + Service entries.
-// NO fake ratings, NO aggregateRating, NO reviews, NO invented offers, NO fake service areas.
-// All business details are either verified-minimal or clearly marked PLACEHOLDER.
-// Evidence: RideBookingPageShell.php:52 (renderSchema), 64-174 (@graph), 174 (script + flags).
-
-const siteUrl = 'https://kmxmedia.com';
+const siteUrl = (Astro.site?.toString() || 'https://kmxmedia.com').replace(/\/$/, '');
 const orgId = `${siteUrl}/#organization`;
 const siteId = `${siteUrl}/#website`;
 const pageId = `${siteUrl}/#webpage`;
 const faqId = `${siteUrl}/#faq`;
+
+const faqItems = [
+  {
+    question: 'What does a Colorado Springs small business website need to do today?',
+    answer:
+      'It should help drive calls, bookings, quote requests, customer intake, and follow-up. Looking modern is useful, but the site also needs to move work forward.',
+  },
+  {
+    question: 'Do I need both a website and a Google Business Profile?',
+    answer:
+      'Usually yes. Google Business Profile helps people find you. The website gives those visitors a clearer path to call, book, request a quote, or send complete details.',
+  },
+  {
+    question: 'Can you build a website that books appointments, rides, or consultations?',
+    answer:
+      'Yes. If booking is part of the workflow, the recommended plan can include a booking or scheduling flow.',
+  },
+  {
+    question: 'Can you add quote request or customer intake forms?',
+    answer:
+      'Yes. Quote and intake forms are core parts of the workflow website model when your team needs better details before responding.',
+  },
+  {
+    question: 'What is a workflow website?',
+    answer:
+      'A workflow website is built around customer actions: collecting the right details, routing them, following up, and making the next step clearer for both sides.',
+  },
+  {
+    question: 'What do AI workflow agents do?',
+    answer:
+      'They can help with first response, missing-info collection, lead qualification, reminders, FAQ replies, and handoff summaries, with human oversight.',
+  },
+  {
+    question: 'Can you improve my current site instead of rebuilding?',
+    answer:
+      'Sometimes. If the current structure can support the workflows you need, optimization may work. If not, a focused rebuild may be faster and clearer.',
+  },
+  {
+    question: 'How long does this take?',
+    answer:
+      'Timeline is blocked until scope is known. The intake gives enough detail to recommend a launch path and discuss timing.',
+  },
+];
+
+const services = [
+  {
+    name: 'Colorado Springs Workflow Website Design',
+    serviceType: 'Web design / workflow website design',
+    description:
+      'Website design for Colorado Springs service businesses, focused on calls, bookings, quote requests, customer intake, follow-up, and cleaner lead details.',
+  },
+  {
+    name: 'Local SEO and Google Business Profile Conversion',
+    serviceType: 'Local SEO / GBP conversion',
+    description:
+      'Website-side local conversion support that helps Google Business Profile visitors move into calls, clicks, bookings, quote requests, or intake details.',
+  },
+  {
+    name: 'Booking, Quote Request, and Customer Intake Systems',
+    serviceType: 'Booking / quote / customer intake systems',
+    description:
+      'Website workflows for appointment scheduling, ride or reservation requests, quote requests, project details, new-client intake, event inquiries, confirmations, and handoff language.',
+  },
+  {
+    name: 'Workflow Automation and AI Workflow Agents',
+    serviceType: 'Workflow automation / AI workflow agents',
+    description:
+      'Practical AI workflow agents and automations for first response, missing-info collection, lead qualification, routing, reminders, customer intake, and clean human handoff.',
+  },
+];
 
 const schema = {
   '@context': 'https://schema.org',
@@ -23,9 +84,7 @@ const schema = {
       name: 'KMX Media',
       url: siteUrl,
       description:
-        'KMX Media builds workflow websites, booking and intake systems, local SEO surfaces, and practical AI workflow agents for local businesses. Websites that capture leads, book work, follow up, and reduce admin drag.',
-      // PLACEHOLDER: add real logo, address, telephone, email, sameAs (GBP, LinkedIn) when verified.
-      // Do not invent serviceArea or geo.
+        'KMX Media builds Colorado Springs workflow websites focused on calls, bookings, quote requests, customer intake, follow-up, local SEO / Google Business Profile conversion, workflow automation, and practical AI workflow agents.',
     },
     {
       '@type': 'WebSite',
@@ -40,7 +99,7 @@ const schema = {
       '@type': 'WebPage',
       '@id': pageId,
       url: siteUrl,
-      name: 'KMX Media | Workflow websites, intake systems & AI agents for local businesses',
+      name: 'Colorado Springs Web Design for Local Businesses That Need More Leads',
       isPartOf: {
         '@id': siteId,
       },
@@ -48,93 +107,31 @@ const schema = {
         '@id': orgId,
       },
       description:
-        'Not brochure sites. We build sites that do the work: structured lead capture, booking and quote intake, customer follow-up automation, and AI agents grounded in real operations.',
+        'A Colorado Springs web design homepage where the intake form and live recommendation panel assemble a workflow website plan for calls, bookings, quote requests, customer intake, local SEO / GBP conversion, automation, and AI follow-up.',
     },
+    ...services.map((service) => ({
+      '@type': 'Service',
+      name: service.name,
+      serviceType: service.serviceType,
+      provider: {
+        '@id': orgId,
+      },
+      description: service.description,
+    })),
     {
       '@type': 'FAQPage',
       '@id': faqId,
-      mainEntity: [
-        {
-          '@type': 'Question',
-          name: 'Is this a WordPress or CMS site?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'No. KMX Media builds standalone workflow systems and custom frontends. We do not sell themes, page builders, or generic CMS installs.',
-          },
+      mainEntity: faqItems.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.answer,
         },
-        {
-          '@type': 'Question',
-          name: 'What does an AI workflow agent actually do?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Practical agents that answer common customer questions, collect missing intake details, draft follow-ups, route leads to the right person, prepare quotes or booking summaries, and keep operational data organized. They reduce repetitive admin without replacing judgment.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'How is the intake form different from a normal contact form?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'It asks what the business needs the website to accomplish (calls, bookings, quotes, intake, follow-up, AI help, SEO). We qualify the outcome before discussing design or tech. This produces better project scope and faster launches.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'Do you only work with local businesses?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Our positioning and examples focus on local operators who need Google Business Profile traffic, phone calls, appointments, and structured follow-up to convert. The same patterns apply more broadly.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'What happens after I submit the form?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'This is currently a placeholder form (see site footer and README). When connected, submissions will create a structured lead record. You will receive confirmation and a follow-up from the team within one business day to scope the work.',
-          },
-        },
-      ],
-    },
-    // Service entries for the core offerings (no fake pricing/availability).
-    {
-      '@type': 'Service',
-      name: 'Conversion Homepage Launch',
-      provider: {
-        '@id': orgId,
-      },
-      description:
-        'A focused homepage that turns visitors into structured leads or bookings instead of just informing them. Includes clear outcome CTAs and intake surfaces.',
-    },
-    {
-      '@type': 'Service',
-      name: 'Booking and Quote Intake Systems',
-      provider: {
-        '@id': orgId,
-      },
-      description:
-        'Multi-step qualification forms, availability-aware booking flows, quote request pipelines, and confirmation + customer self-serve views.',
-    },
-    {
-      '@type': 'Service',
-      name: 'GBP Traffic to Structured Leads',
-      provider: {
-        '@id': orgId,
-      },
-      description:
-        'Surfaces and flows that convert Google Business Profile and local search traffic into named leads with context, rather than generic inquiries.',
-    },
-    {
-      '@type': 'Service',
-      name: 'AI Workflow Agents for Operations',
-      provider: {
-        '@id': orgId,
-      },
-      description:
-        'Agents that handle repetitive customer questions, complete partial intakes, draft follow-ups, route leads, prepare operational summaries, and reduce admin time on routine communication.',
+      })),
     },
   ],
 };
 ---
 
-<script type="application/ld+json" set:html={JSON.stringify(schema, null, 0)} />
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

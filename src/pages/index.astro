@@ -3,162 +3,450 @@ import Layout from '../layouts/Layout.astro';
 import IntakeForm from '../components/IntakeForm.astro';
 import JsonLd from '../components/JsonLd.astro';
 
-// Single-page high-converting homepage for KMX Media.
-// Designed around the intake form, not portfolio or generic services brochure.
-// All copy and structure grounded in "websites that do the work".
-// Schema via dedicated component (modeled on reference renderSchema patterns but static + no fakes).
+import iconCalls from '../assets/icons/icon-calls.jpg';
+import iconBooking from '../assets/icons/icon-booking.jpg';
+import iconQuoteIntake from '../assets/icons/icon-quote-intake.jpg';
+import iconAiFollowup from '../assets/icons/icon-ai-followup.jpg';
+import iconAutomation from '../assets/icons/icon-automation.jpg';
+import iconContractors from '../assets/icons/icon-contractors.jpg';
+import iconTransportation from '../assets/icons/icon-transportation.jpg';
+import iconMedspaClinic from '../assets/icons/icon-medspa-clinic.jpg';
+import iconRepairServices from '../assets/icons/icon-repair-services.jpg';
+import iconProfessionalServices from '../assets/icons/icon-professional-services.jpg';
+import iconEventVendors from '../assets/icons/icon-event-vendors.jpg';
+import diagramSeoGbp from '../assets/diagrams/diagram-seo-gbp-loop.jpg';
+import diagramBookingIntake from '../assets/diagrams/diagram-booking-intake-flow.jpg';
+import diagramAiFollowup from '../assets/diagrams/diagram-ai-followup-flow.jpg';
+import diagramIntakeToPlan from '../assets/diagrams/diagram-intake-to-plan-flow.jpg';
+import textureGrid from '../assets/textures/subtle-local-grid.jpg';
+
+const outcomeCards = [
+  {
+    title: 'Get more calls from Google',
+    body: 'Local SEO signals and clear call paths help turn search attention into phone calls.',
+    icon: iconCalls,
+  },
+  {
+    title: 'Book appointments, rides, or consultations',
+    body: 'Let customers choose the next step without a chain of missed calls and emails.',
+    icon: iconBooking,
+  },
+  {
+    title: 'Collect quote requests',
+    body: 'Capture job details up front so estimates are easier to qualify.',
+    icon: iconQuoteIntake,
+  },
+  {
+    title: 'Capture customer intake',
+    body: 'Turn vague inquiries into organized information your team can use.',
+    icon: iconQuoteIntake,
+  },
+  {
+    title: 'Follow up faster',
+    body: 'Use automated first response, reminders, and handoff notes so fewer leads go cold.',
+    icon: iconAiFollowup,
+  },
+  {
+    title: 'Reduce admin work',
+    body: 'Connect forms, routing, and follow-up so routine tasks do not pile up manually.',
+    icon: iconAutomation,
+  },
+];
+
+const industryCards = [
+  {
+    title: 'Contractors and home services',
+    body: 'Quote details, local calls, project scope, and cleaner follow-up.',
+    icon: iconContractors,
+  },
+  {
+    title: 'Transportation and private rides',
+    body: 'Ride requests, timing details, contact capture, and handoff notes.',
+    icon: iconTransportation,
+  },
+  {
+    title: 'Med spas and clinics',
+    body: 'Consultation requests, intake, reminders, and human-reviewed handoff.',
+    icon: iconMedspaClinic,
+  },
+  {
+    title: 'Repair services',
+    body: 'Service requests, issue details, routing, and follow-up without unsupported availability claims.',
+    icon: iconRepairServices,
+  },
+  {
+    title: 'Consultants and professional services',
+    body: 'Consultation scheduling, client intake, and organized next steps.',
+    icon: iconProfessionalServices,
+  },
+  {
+    title: 'Event vendors',
+    body: 'Event inquiries, quote details, date needs, and response routing.',
+    icon: iconEventVendors,
+  },
+  {
+    title: 'Restaurants and bars',
+    body: 'Reservation, catering, private event, or waitlist capture when that workflow fits.',
+    icon: iconProfessionalServices,
+  },
+];
+
+const faqs = [
+  {
+    q: 'What does a Colorado Springs small business website need to do today?',
+    a: 'It should help drive calls, bookings, quote requests, customer intake, and follow-up. Looking modern is useful, but the site also needs to move work forward.',
+  },
+  {
+    q: 'Do I need both a website and a Google Business Profile?',
+    a: 'Usually yes. Google Business Profile helps people find you. The website gives those visitors a clearer path to call, book, request a quote, or send complete details.',
+  },
+  {
+    q: 'Can you build a website that books appointments, rides, or consultations?',
+    a: 'Yes. If booking is part of the workflow, the recommended plan can include a booking or scheduling flow.',
+  },
+  {
+    q: 'Can you add quote request or customer intake forms?',
+    a: 'Yes. Quote and intake forms are core parts of the workflow website model when your team needs better details before responding.',
+  },
+  {
+    q: 'What is a workflow website?',
+    a: 'A workflow website is built around customer actions: collecting the right details, routing them, following up, and making the next step clearer for both sides.',
+  },
+  {
+    q: 'What do AI workflow agents do?',
+    a: 'They can help with first response, missing-info collection, lead qualification, reminders, FAQ replies, and handoff summaries, with human oversight.',
+  },
+  {
+    q: 'Can you improve my current site instead of rebuilding?',
+    a: 'Sometimes. If the current structure can support the workflows you need, optimization may work. If not, a focused rebuild may be faster and clearer.',
+  },
+  {
+    q: 'How long does this take?',
+    a: 'Timeline is blocked until scope is known. The intake gives enough detail to recommend a launch path and discuss timing.',
+  },
+];
 ---
 
-<Layout title="KMX Media | Workflow websites, intake systems & AI agents for local businesses">
+<Layout
+  title="Colorado Springs Web Design for Workflow Websites | KMX Media"
+  description="KMX Media builds Colorado Springs workflow websites that capture calls, bookings, quote requests, customer intake, and follow-up. Answer the intake and get a recommended website plan."
+>
   <JsonLd slot="head" />
 
-  <!-- Minimal operator nav -->
-  <nav class="border-b border-slate-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
-    <div class="mx-auto flex max-w-5xl items-center justify-between px-5 py-4">
-      <div class="flex items-center gap-3">
-        <div class="h-6 w-6 rounded bg-slate-900"></div>
-        <span class="font-semibold tracking-tight">KMX Media</span>
-      </div>
-      <a href="#intake-form" class="rounded-full border border-slate-300 px-4 py-1.5 text-xs font-semibold tracking-widest transition hover:bg-slate-900 hover:text-white">START INTAKE</a>
+  <nav class="border-b border-stone-200 bg-[#fbfaf6]/90 backdrop-blur supports-[backdrop-filter]:bg-[#fbfaf6]/75">
+    <div class="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
+      <a href="#top" class="flex items-center gap-3" aria-label="KMX Media home">
+        <span class="grid h-9 w-9 place-items-center rounded-2xl bg-[#22332d] text-sm font-black tracking-tight text-[#fbfaf6]">K</span>
+        <span class="font-semibold tracking-tight text-[#22332d]">KMX Media</span>
+      </a>
+      <a href="#intake-form" class="inline-flex min-h-11 items-center justify-center rounded-full border border-[#d4cab8] px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-[#3b4a42] transition hover:border-[#22332d] hover:bg-[#22332d] hover:text-[#fbfaf6] focus:outline-none focus:ring-2 focus:ring-[#a45f35] focus:ring-offset-2">
+        Start Plan
+      </a>
     </div>
   </nav>
 
-  <!-- Hero -->
-  <header class="border-b border-slate-200 bg-white">
-    <div class="mx-auto max-w-5xl px-5 pb-16 pt-14 md:pt-20">
-      <div class="max-w-3xl">
-        <div class="inline-block rounded-full bg-slate-100 px-3 py-1 text-[10px] font-semibold tracking-[0.12em] text-slate-600">NOT A BROCHURE SITE. NOT A CMS.</div>
-        <h1 class="mt-4 text-balance text-5xl font-semibold tracking-tighter text-slate-950 md:text-6xl">
-          Websites that do the work.
-        </h1>
-        <p class="mt-5 max-w-2xl text-lg text-slate-600">
-          KMX Media builds intake systems, booking and quote flows, structured lead capture, customer follow-up automation, local SEO surfaces, and practical AI workflow agents for local businesses.
-        </p>
-        <div class="mt-8 flex flex-wrap gap-3">
-          <a href="#intake-form" class="inline-flex items-center justify-center rounded-2xl bg-slate-950 px-7 py-3 text-sm font-semibold text-white shadow-sm transition active:scale-[0.985] hover:bg-black">Tell us what your site needs to do</a>
-          <a href="#ai-agents" class="inline-flex items-center justify-center rounded-2xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-800 transition hover:border-slate-400">See how AI agents fit operations</a>
+  <main id="top" class="relative overflow-x-clip bg-[#fbfaf6] text-[#22332d]" style={`--texture-url: url(${textureGrid.src});`}>
+    <div class="pointer-events-none absolute inset-0 bg-[image:var(--texture-url)] bg-[length:520px_auto] opacity-[0.035]"></div>
+
+    <header class="relative border-b border-stone-200">
+      <div class="mx-auto grid max-w-6xl gap-10 px-5 py-14 md:py-20 lg:grid-cols-[1fr_0.75fr] lg:items-end">
+        <div>
+          <p class="inline-flex rounded-full border border-[#d4cab8] bg-white/80 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-[#7a583a]">
+            Colorado Springs web design
+          </p>
+          <h1 class="mt-5 max-w-4xl text-balance text-4xl font-black tracking-[-0.045em] text-[#1b2824] sm:text-5xl md:text-6xl">
+            Colorado Springs Web Design for Local Businesses That Need More Leads
+          </h1>
+          <p class="mt-5 max-w-3xl text-pretty text-lg leading-8 text-[#53635b] md:text-xl">
+            Build a website that captures calls, bookings, quote requests, customer intake, and follow-up.
+            Answer the questions below and your recommended website plan will assemble as you go.
+          </p>
+          <p class="mt-5 max-w-2xl text-base leading-7 text-[#596861]">
+            Most local business websites stop at information. KMX Media builds workflow websites that help
+            customers take the next action, give you cleaner lead details, and reduce the repetitive admin
+            that happens after someone clicks.
+          </p>
+          <div class="mt-8">
+            <a href="#intake-form" class="inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-[#c66b3d] px-7 py-3 text-sm font-black uppercase tracking-[0.12em] text-white shadow-[0_18px_40px_rgba(198,107,61,0.25)] transition hover:bg-[#a95530] focus:outline-none focus:ring-2 focus:ring-[#c66b3d] focus:ring-offset-2 sm:w-auto">
+              Start My Website Plan
+            </a>
+          </div>
         </div>
-        <p class="mt-4 text-xs text-slate-500">For operators who need the site to generate calls, bookings, and organized work — not just look good.</p>
-      </div>
-    </div>
-  </header>
 
-  <main>
-    <!-- Main intake form (the center of the page) -->
-    <section id="intake-form" class="mx-auto max-w-5xl px-5 py-12 md:py-16">
-      <div class="mx-auto max-w-2xl text-center">
-        <div class="text-xs font-semibold tracking-[0.1em] text-slate-500">QUALIFIED INTAKE</div>
-        <h2 class="mt-2 text-balance text-3xl font-semibold tracking-tight">What should the website actually accomplish?</h2>
-        <p class="mt-3 text-slate-600">Answer the outcome questions first. We design the system around the results you need, not around pages or themes.</p>
+        <aside class="rounded-[2rem] border border-[#d4cab8] bg-white/80 p-5 shadow-sm md:p-6">
+          <p class="text-xs font-bold uppercase tracking-[0.16em] text-[#7a583a]">Workflow website</p>
+          <p class="mt-3 text-lg font-bold text-[#22332d]">A website built around customer actions.</p>
+          <p class="mt-3 text-sm leading-6 text-[#596861]">
+            Calls, booking, quote requests, intake, routing, follow-up, and clearer next steps. The site does
+            more than describe the business; it starts the work.
+          </p>
+        </aside>
+      </div>
+    </header>
+
+    <section id="intake-form" class="relative mx-auto max-w-6xl px-5 py-12 md:py-16">
+      <div class="max-w-3xl">
+        <p class="text-xs font-bold uppercase tracking-[0.16em] text-[#7a583a]">Intent-first intake</p>
+        <h2 class="mt-3 text-balance text-3xl font-black tracking-[-0.035em] text-[#1b2824] md:text-5xl">
+          Tell Us What Your Website Needs to Do
+        </h2>
+        <p class="mt-4 text-lg leading-8 text-[#596861]">
+          Answer a few questions about your business. We will show the recommended workflow website structure,
+          package direction, and add-ons as your answers come in.
+        </p>
+        <p class="mt-3 max-w-2xl text-sm leading-6 text-[#6b746f]">
+          Start with outcomes, then add launch and contact details. This keeps the plan focused on what the
+          site needs to accomplish instead of turning the page into a generic quote request.
+        </p>
       </div>
 
-      <div class="mx-auto mt-8 max-w-[820px]">
+      <div class="mt-8">
         <IntakeForm />
       </div>
 
-      <p class="mx-auto mt-6 max-w-prose text-center text-xs text-slate-500">
-        This is version one of the kmxmedia.com intake surface. Form handling is placeholder. See footer and README for exact status.
-      </p>
-    </section>
-
-    <!-- AI workflow agents (prominent, practical, grounded) -->
-    <section id="ai-agents" class="border-y border-slate-200 bg-white py-12 md:py-16">
-      <div class="mx-auto max-w-5xl px-5">
-        <div class="grid gap-8 md:grid-cols-12 md:items-center">
-          <div class="md:col-span-5">
-            <div class="text-xs font-semibold tracking-[0.1em] text-teal-700">OPERATIONS, NOT THEATRE</div>
-            <h2 class="mt-2 text-balance text-3xl font-semibold tracking-tight">AI agents that handle the busywork</h2>
-            <p class="mt-3 text-slate-600">We build agents that plug into the workflows your site already runs: intake, follow-up, qualification, and customer communication. They are scoped to concrete tasks so they reduce drag instead of creating new ones.</p>
+      <div class="mt-12 hidden rounded-[2rem] border border-[#d4cab8] bg-white p-5 shadow-sm md:block">
+        <div class="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-[0.16em] text-[#7a583a]">How the plan assembles</p>
+            <h3 class="mt-2 text-2xl font-black tracking-[-0.025em]">From answers to recommended scope.</h3>
+            <p class="mt-3 text-sm leading-6 text-[#596861]">
+              The intake identifies customer actions, workflow needs, local SEO / GBP fit, automation needs,
+              and launch readiness before the next conversation starts.
+            </p>
           </div>
-          <div class="md:col-span-7">
-            <ul class="grid gap-x-8 gap-y-4 text-sm md:grid-cols-2">
-              <li class="flex gap-3"><span class="mt-1 block h-1.5 w-1.5 shrink-0 rounded-full bg-teal-600"></span> Answer repetitive customer questions with accurate, updatable answers</li>
-              <li class="flex gap-3"><span class="mt-1 block h-1.5 w-1.5 shrink-0 rounded-full bg-teal-600"></span> Collect missing intake details before a human touches the lead</li>
-              <li class="flex gap-3"><span class="mt-1 block h-1.5 w-1.5 shrink-0 rounded-full bg-teal-600"></span> Draft follow-ups and reminders that stay in your voice and policy</li>
-              <li class="flex gap-3"><span class="mt-1 block h-1.5 w-1.5 shrink-0 rounded-full bg-teal-600"></span> Route leads to the right person or queue based on answers and availability</li>
-              <li class="flex gap-3"><span class="mt-1 block h-1.5 w-1.5 shrink-0 rounded-full bg-teal-600"></span> Prepare quotes or booking requests with the structured data already captured</li>
-              <li class="flex gap-3"><span class="mt-1 block h-1.5 w-1.5 shrink-0 rounded-full bg-teal-600"></span> Keep operational notes, customer context, and content updates organized</li>
-              <li class="flex gap-3 md:col-span-2"><span class="mt-1 block h-1.5 w-1.5 shrink-0 rounded-full bg-teal-600"></span> Reduce the admin hours spent on the same 20% of conversations and data entry</li>
-            </ul>
-            <p class="mt-5 text-xs text-slate-500">Agents are always paired with human oversight and clear escalation. They are not a replacement for your judgment or relationships.</p>
-          </div>
+          <img
+            src={diagramIntakeToPlan.src}
+            width={diagramIntakeToPlan.width}
+            height={diagramIntakeToPlan.height}
+            alt="Diagram showing intake answers becoming a recommended website plan."
+            loading="lazy"
+            decoding="async"
+            class="w-full rounded-3xl border border-[#eadfce] object-cover"
+          />
         </div>
       </div>
     </section>
 
-    <!-- Service model / outcome sections -->
-    <section class="mx-auto max-w-5xl px-5 py-12 md:py-16">
-      <div class="mx-auto max-w-2xl">
-        <div class="text-xs font-semibold tracking-[0.1em] text-slate-500">HOW WE ENGAGE</div>
-        <h2 class="mt-2 text-balance text-3xl font-semibold tracking-tight">Outcome-driven work, not deliverables</h2>
-        <p class="mt-3 text-slate-600">We organize projects around what the business actually needs the site (and its connected systems) to produce.</p>
-      </div>
-
-      <div class="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <!-- Card 1 -->
-        <div class="rounded-3xl border border-slate-200 bg-white p-6">
-          <div class="text-[10px] font-semibold tracking-widest text-slate-500">LAUNCH</div>
-          <h3 class="mt-2 text-xl font-semibold tracking-tight">Conversion homepage</h3>
-          <p class="mt-2 text-sm text-slate-600">A tight, high-signal homepage whose primary job is turning the right visitors into qualified leads or direct bookings. Strong outcome CTAs and the intake form live here.</p>
-          <p class="mt-4 text-xs text-slate-500">Typical first move for businesses with existing traffic that currently leaks.</p>
+    <section class="relative border-y border-stone-200 bg-white/70 py-12 md:py-16">
+      <div class="mx-auto max-w-6xl px-5">
+        <div class="max-w-3xl">
+          <p class="text-xs font-bold uppercase tracking-[0.16em] text-[#7a583a]">Customer actions</p>
+          <h2 class="mt-3 text-balance text-3xl font-black tracking-[-0.035em] md:text-5xl">
+            What Your Website Should Help Customers Do
+          </h2>
+          <p class="mt-4 text-lg leading-8 text-[#596861]">Real actions for Colorado Springs service businesses.</p>
         </div>
 
-        <!-- Card 2 -->
-        <div class="rounded-3xl border border-slate-200 bg-white p-6">
-          <div class="text-[10px] font-semibold tracking-widest text-slate-500">SYSTEM</div>
-          <h3 class="mt-2 text-xl font-semibold tracking-tight">Booking or quote intake</h3>
-          <p class="mt-2 text-sm text-slate-600">Multi-step forms that qualify before you spend time, show relevant options or pricing ranges, capture the structured data you actually need, and produce clean handoff to your team or calendar.</p>
-          <p class="mt-4 text-xs text-slate-500">Replaces email tennis and scattered form responses.</p>
+        <div class="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {outcomeCards.map((card) => (
+            <article class="rounded-[1.6rem] border border-[#e0d5c5] bg-[#fbfaf6] p-5 shadow-sm">
+              <img
+                src={card.icon.src}
+                width="40"
+                height="40"
+                alt=""
+                loading="lazy"
+                decoding="async"
+                class="h-9 w-9 rounded-xl object-cover lg:h-11 lg:w-11"
+              />
+              <h3 class="mt-4 text-xl font-black tracking-[-0.02em] text-[#22332d]">{card.title}</h3>
+              <p class="mt-2 text-sm leading-6 text-[#596861]">{card.body}</p>
+            </article>
+          ))}
         </div>
 
-        <!-- Card 3 -->
-        <div class="rounded-3xl border border-slate-200 bg-white p-6">
-          <div class="text-[10px] font-semibold tracking-widest text-slate-500">LOCAL</div>
-          <h3 class="mt-2 text-xl font-semibold tracking-tight">GBP traffic → structured leads</h3>
-          <p class="mt-2 text-sm text-slate-600">Surfaces and flows that turn Google Business Profile and local search visitors into named, context-rich leads instead of anonymous calls or “send message” black holes.</p>
-          <p class="mt-4 text-xs text-slate-500">The difference between “we get views” and “we get bookable requests”.</p>
-        </div>
-
-        <!-- Card 4 -->
-        <div class="rounded-3xl border border-slate-200 bg-white p-6">
-          <div class="text-[10px] font-semibold tracking-widest text-slate-500">AUTOMATION</div>
-          <h3 class="mt-2 text-xl font-semibold tracking-tight">AI agents in the workflow</h3>
-          <p class="mt-2 text-sm text-slate-600">Agents scoped to your actual operations: answering FAQs, completing partial intakes, drafting replies, preparing summaries, and keeping the small repetitive things from eating your day.</p>
-          <p class="mt-4 text-xs text-slate-500">Always reviewable. Always under your policies.</p>
-        </div>
-
-        <!-- Card 5 -->
-        <div class="rounded-3xl border border-slate-200 bg-white p-6 md:col-span-2 lg:col-span-1">
-          <div class="text-[10px] font-semibold tracking-widest text-slate-500">PORTAL (WHEN USEFUL)</div>
-          <h3 class="mt-2 text-xl font-semibold tracking-tight">Customer-facing pages or self-serve</h3>
-          <p class="mt-2 text-sm text-slate-600">When the business case is clear: simple status views, reschedule or update flows, document collection, or “my requests” grids for repeat customers. Inspired by real customer self-serve patterns but built for your operation, not rides.</p>
-          <p class="mt-4 text-xs text-slate-500">Added only when it removes work for both sides.</p>
+        <div class="mt-8 rounded-[1.6rem] border border-[#d4cab8] bg-[#22332d] p-6 text-[#fbfaf6] md:p-8">
+          <p class="text-xs font-bold uppercase tracking-[0.16em] text-[#e0b08e]">Workflow website definition</p>
+          <p class="mt-3 max-w-4xl text-lg leading-8">
+            A workflow website is a local business website built around customer actions: calls, booking,
+            quote requests, customer intake, routing, follow-up, and clearer next steps. A brochure website
+            mainly informs; a workflow website helps the visitor take action and gives the business cleaner
+            information to respond.
+          </p>
         </div>
       </div>
     </section>
 
-    <!-- Positioning closer -->
-    <section class="border-t border-slate-200 bg-slate-950 py-10 text-slate-200">
-      <div class="mx-auto max-w-5xl px-5 text-center">
-        <p class="mx-auto max-w-2xl text-sm">
-          We are not a creative agency selling websites as content. We are systems builders who make the website (and its connected agents) responsible for moving real work forward for local operators.
+    <section id="local-seo-gbp" class="relative mx-auto max-w-6xl px-5 py-12 md:py-16">
+      <div class="grid gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-[0.16em] text-[#7a583a]">Local SEO / Google Business Profile</p>
+          <h2 class="mt-3 text-balance text-3xl font-black tracking-[-0.035em] md:text-5xl">
+            Turn Google and Google Business Profile Traffic Into Better Leads
+          </h2>
+          <p class="mt-4 text-lg leading-8 text-[#596861]">Getting found is only useful if visitors know what to do next.</p>
+          <p class="mt-4 text-base leading-7 text-[#596861]">
+            Google Business Profile can help people find you. Your website should turn that attention into
+            useful customer action: calls, clicks, booking requests, quote requests, or intake details.
+            KMX Media builds the website side of that local conversion path so your profile traffic has
+            somewhere clear to land.
+          </p>
+          <ul class="mt-5 space-y-3 text-sm leading-6 text-[#48564f]">
+            <li>Clear calls and click paths from local search visitors</li>
+            <li>Service pages and sections that match the actions customers are trying to take</li>
+            <li>Intake and booking flows that reduce vague messages</li>
+            <li>Schema-supporting content only where the facts are visible and verified</li>
+          </ul>
+        </div>
+        <img
+          src={diagramSeoGbp.src}
+          width={diagramSeoGbp.width}
+          height={diagramSeoGbp.height}
+          alt="Diagram showing Google Business Profile discovery leading to website conversion actions."
+          loading="lazy"
+          decoding="async"
+          class="hidden w-full rounded-[2rem] border border-[#d4cab8] bg-white object-cover shadow-sm md:block"
+        />
+      </div>
+    </section>
+
+    <section id="booking-intake" class="relative border-y border-stone-200 bg-white/70 py-12 md:py-16">
+      <div class="mx-auto grid max-w-6xl gap-8 px-5 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
+        <img
+          src={diagramBookingIntake.src}
+          width={diagramBookingIntake.width}
+          height={diagramBookingIntake.height}
+          alt="Diagram showing customer requests becoming booking, quote, or intake details."
+          loading="lazy"
+          decoding="async"
+          class="hidden w-full rounded-[2rem] border border-[#d4cab8] bg-white object-cover shadow-sm md:block"
+        />
+        <div>
+          <p class="text-xs font-bold uppercase tracking-[0.16em] text-[#7a583a]">Booking / quote / intake</p>
+          <h2 class="mt-3 text-balance text-3xl font-black tracking-[-0.035em] md:text-5xl">
+            Booking Forms, Quote Requests, and Customer Intake Built In
+          </h2>
+          <p class="mt-4 text-lg leading-8 text-[#596861]">Let customers give you the right details the first time.</p>
+          <p class="mt-4 text-base leading-7 text-[#596861]">
+            Add the exact flow your business needs: appointment scheduling, ride or reservation requests,
+            quote requests, project details, new-client intake, or event inquiries. The goal is simple:
+            customers take action on the site, and your team receives cleaner information with less back-and-forth.
+          </p>
+          <ul class="mt-5 space-y-3 text-sm leading-6 text-[#48564f]">
+            <li>Booking or scheduling paths for time-based services</li>
+            <li>Quote forms that collect job details before you respond</li>
+            <li>Intake flows for clinics, consultants, service businesses, and event vendors</li>
+            <li>Confirmation and handoff language that sets expectations clearly</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="workflow-ai" class="relative mx-auto max-w-6xl px-5 py-12 md:py-16">
+      <div class="grid gap-8 lg:grid-cols-[0.94fr_1.06fr] lg:items-center">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-[0.16em] text-[#7a583a]">Workflow automation / AI follow-up</p>
+          <h2 class="mt-3 text-balance text-3xl font-black tracking-[-0.035em] md:text-5xl">
+            Workflow Automation and AI Agents for Local Follow-Up
+          </h2>
+          <p class="mt-4 text-lg leading-8 text-[#596861]">Use the website to start the work after the lead arrives.</p>
+          <p class="mt-4 text-base leading-7 text-[#596861]">
+            KMX Media builds practical AI workflow agents and automations for the repetitive parts of customer
+            communication: first response, missing-info collection, lead qualification, routing, reminders,
+            and customer intake. The goal is not to replace your judgment. The goal is to make sure the routine
+            work starts quickly and hands off cleanly.
+          </p>
+          <ul class="mt-5 grid gap-3 text-sm leading-6 text-[#48564f] sm:grid-cols-2">
+            <li>First-response help for new leads</li>
+            <li>Missing-info collection before a human follows up</li>
+            <li>Lead routing based on answers and business rules</li>
+            <li>Reminders and follow-up drafts</li>
+            <li>Customer intake summaries with clear handoff points</li>
+          </ul>
+        </div>
+        <img
+          src={diagramAiFollowup.src}
+          width={diagramAiFollowup.width}
+          height={diagramAiFollowup.height}
+          alt="Diagram showing AI workflow follow-up from first response to human handoff."
+          loading="lazy"
+          decoding="async"
+          class="hidden w-full rounded-[2rem] border border-[#d4cab8] bg-white object-cover shadow-sm md:block"
+        />
+      </div>
+    </section>
+
+    <section id="industries" class="relative border-y border-stone-200 bg-white/70 py-12 md:py-16">
+      <div class="mx-auto max-w-6xl px-5">
+        <div class="max-w-3xl">
+          <p class="text-xs font-bold uppercase tracking-[0.16em] text-[#7a583a]">Business fit</p>
+          <h2 class="mt-3 text-balance text-3xl font-black tracking-[-0.035em] md:text-5xl">
+            Built for Colorado Springs Service Businesses
+          </h2>
+          <p class="mt-4 text-lg leading-8 text-[#596861]">Different businesses need different customer actions.</p>
+          <p class="mt-4 text-base leading-7 text-[#596861]">
+            The same homepage should not serve every business the same way. Contractors need quote details.
+            Clinics and consultants need intake. Transportation and service operators may need booking. Event
+            vendors need inquiry routing. Restaurants and bars may need reservation, catering, event, or waitlist
+            capture. The intake above helps choose the right path.
+          </p>
+        </div>
+
+        <div class="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {industryCards.map((card) => (
+            <article class="rounded-[1.4rem] border border-[#e0d5c5] bg-[#fbfaf6] p-5">
+              <img
+                src={card.icon.src}
+                width="40"
+                height="40"
+                alt=""
+                loading="lazy"
+                decoding="async"
+                class="h-8 w-8 rounded-xl object-cover lg:h-10 lg:w-10"
+              />
+              <h3 class="mt-4 text-lg font-black tracking-[-0.02em] text-[#22332d]">{card.title}</h3>
+              <p class="mt-2 text-sm leading-6 text-[#596861]">{card.body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="relative mx-auto max-w-6xl px-5 py-12 md:py-16">
+      <div class="max-w-3xl">
+        <p class="text-xs font-bold uppercase tracking-[0.16em] text-[#7a583a]">FAQ</p>
+        <h2 class="mt-3 text-balance text-3xl font-black tracking-[-0.035em] md:text-5xl">
+          Questions Colorado Springs Business Owners Usually Ask
+        </h2>
+      </div>
+
+      <div class="mt-8 grid gap-4 lg:grid-cols-2">
+        {faqs.map((item) => (
+          <details class="group rounded-[1.4rem] border border-[#d4cab8] bg-white p-5 shadow-sm">
+            <summary class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 font-bold text-[#22332d] marker:hidden">
+              <span>{item.q}</span>
+              <span class="text-xl leading-none text-[#c66b3d] transition group-open:rotate-45">+</span>
+            </summary>
+            <p class="mt-3 text-sm leading-6 text-[#596861]">{item.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section class="relative border-t border-stone-200 bg-[#22332d] px-5 py-12 text-[#fbfaf6] md:py-16">
+      <div class="mx-auto max-w-4xl text-center">
+        <p class="text-xs font-bold uppercase tracking-[0.16em] text-[#e0b08e]">Recommended plan</p>
+        <h2 class="mt-3 text-balance text-3xl font-black tracking-[-0.035em] md:text-5xl">
+          Build Your Recommended Website Plan
+        </h2>
+        <p class="mx-auto mt-4 max-w-2xl text-lg leading-8 text-[#dbe4df]">
+          Answer the intake questions and see the sections, add-ons, and launch notes that fit your business.
         </p>
-        <div class="mt-4 text-[10px] tracking-[0.1em] text-slate-500">KMX MEDIA — NORTHFIELD / TWIN CITIES AREA</div>
+        <p class="mx-auto mt-4 max-w-2xl text-sm leading-6 text-[#c9d4ce]">
+          Your plan starts with the outcomes you choose: calls, booking, quotes, intake, local SEO / GBP conversion,
+          automation, and AI follow-up. The next conversation can start from a clearer direction instead of a blank quote request.
+        </p>
+        <a href="#intake-form" class="mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-[#c66b3d] px-7 py-3 text-sm font-black uppercase tracking-[0.12em] text-white transition hover:bg-[#a95530] focus:outline-none focus:ring-2 focus:ring-[#f1c29b] focus:ring-offset-2 focus:ring-offset-[#22332d] sm:w-auto">
+          Start My Website Plan
+        </a>
       </div>
     </section>
   </main>
 
-  <footer class="border-t border-slate-200 bg-white py-8 text-xs text-slate-500">
-    <div class="mx-auto max-w-5xl px-5">
-      <div class="flex flex-col justify-between gap-y-3 md:flex-row md:items-center">
-        <div>
-          © KMX Media. This is the first real version of the kmxmedia.com homepage.
-          <span class="block md:inline">Built as a standalone static site (no CMS).</span>
-        </div>
-        <div class="text-[10px]">
-          Form and data handling are placeholder in this version. See README.md in the repo for current status, verification steps, and the exact plan to wire a real endpoint.
-        </div>
-      </div>
+  <footer class="border-t border-stone-200 bg-[#fbfaf6] py-8 text-sm text-[#596861]">
+    <div class="mx-auto flex max-w-6xl flex-col gap-3 px-5 md:flex-row md:items-center md:justify-between">
+      <p><strong class="font-black text-[#22332d]">KMX Media</strong> - Colorado Springs workflow websites.</p>
+      <p>Use the intake to generate your recommended website plan.</p>
     </div>
   </footer>
 </Layout>

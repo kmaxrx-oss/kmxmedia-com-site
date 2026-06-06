@@ -1,209 +1,516 @@
 ---
-// Main intake form for KMX Media.
-// Explicit implementation per requirements.
-// - Semantic HTML first (labels, fieldsets, proper types, required where appropriate).
-// - Asks "what the website should do" via multi-select checkboxes (not generic contact).
-// - All fields from contract: business name, contact, email, phone, website/GBP, business type,
-//   what-should-do options, current problem, urgency, budget (optional), notes.
-// - On submit: placeholder flow ONLY. Does not claim transmission.
-// - JS: collects payload, shows success state with echoed data, provides "copy" for manual follow-up.
-// - Clear visual + text that this is a v1 placeholder (see README for backend plan).
-// Evidence labels in comments and UI: CONTEXT_DERIVED, LOCAL_MIRROR (form patterns from BookingShortcode stepped qualification + review before commit).
+import RecommendationPanel from './RecommendationPanel.astro';
 
-const whatShouldDoOptions = [
-  'Get more calls',
-  'Book appointments or rides',
-  'Collect quote requests',
-  'Sell services',
-  'Organize customer intake',
-  'Automate follow-up',
-  'Add AI agent workflow help',
-  'Improve local SEO / GBP conversion',
+const businessTypes = [
+  'Contractor / home service',
+  'Transportation or shuttle',
+  'Restaurant or bar',
+  'Med spa or clinic',
+  'Repair service',
+  'Consultant',
+  'Professional service',
+  'Event vendor',
+  'Other',
 ];
 
-const urgencyOptions = [
-  'ASAP (this week or next)',
-  'Within 30 days',
-  'This quarter',
-  'Exploring options / no hard date',
+const customerAreas = [
+  'Colorado Springs',
+  'Monument',
+  'Falcon',
+  'Fountain',
+  'Manitou Springs',
+  'Black Forest',
+  'Security-Widefield',
+  'Other nearby areas',
 ];
+
+const goals = [
+  'get more calls from Google',
+  'book appointments or rides',
+  'collect quote requests',
+  'collect customer intake',
+  'improve GBP conversion',
+  'follow up with leads faster',
+  'automate admin work',
+  'build a better local business website',
+];
+
+const visitorActions = [
+  'call',
+  'text',
+  'request a quote',
+  'book an appointment',
+  'schedule a consultation',
+  'request a ride',
+  'fill out an intake form',
+  'ask a question',
+];
+
+const localSeoOptions = [
+  'local SEO',
+  'Google Business Profile setup',
+  'GBP conversion help',
+  'Google Maps visibility',
+  'better call and website-click conversion',
+];
+
+const automationOptions = [
+  'lead follow-up',
+  'reminders',
+  'missed-call text-back',
+  'quote routing',
+  'intake routing',
+  'email responses',
+  'review requests',
+  'admin handoff',
+];
+
+const launchWindows = ['ASAP', 'this month', 'this quarter', 'planning ahead'];
+const followUpMethods = ['Email', 'Phone', 'Text'];
+
+const fieldShell = 'rounded-[1.4rem] border border-[#e0d5c5] bg-white p-5 shadow-sm';
+const labelClass = 'block text-base font-black tracking-[-0.01em] text-[#22332d]';
+const helperClass = 'mt-2 text-sm leading-6 text-[#66736d]';
+const inputClass = 'mt-3 min-h-12 w-full rounded-2xl border border-[#d4cab8] bg-[#fffdf8] px-4 py-3 text-base text-[#22332d] shadow-sm outline-none transition placeholder:text-[#9b9184] focus:border-[#c66b3d] focus:ring-2 focus:ring-[#c66b3d]/25';
+
+const checkboxClass = 'flex min-h-12 cursor-pointer items-start gap-3 rounded-2xl border border-[#e0d5c5] bg-[#fffdf8] px-4 py-3 text-sm leading-5 text-[#394941] transition hover:border-[#c66b3d] has-[:checked]:border-[#c66b3d] has-[:checked]:bg-[#fff1e7]';
 ---
 
-<form id="intake-form" class="space-y-8" novalidate>
-  <!-- Status banner (updated by JS) -->
-  <div id="form-status" class="hidden rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-    <!-- populated by script -->
-  </div>
+<form id="website-plan-form" class="grid gap-6 lg:grid-cols-[minmax(0,1.45fr)_minmax(320px,0.8fr)]" novalidate>
+  <div class="space-y-6">
+    <div id="form-status" class="hidden rounded-2xl border px-4 py-3 text-sm"></div>
 
-  <!-- Section: What the website must do (core qualification, early) -->
-  <fieldset class="rounded-3xl border border-slate-200 bg-white p-6 md:p-8">
-    <legend class="px-1 text-sm font-semibold tracking-[0.08em] text-slate-500">1. WHAT THE WEBSITE NEEDS TO DO</legend>
-    <p class="mt-1 text-sm text-slate-600">Select all that apply. This is the most important part of the intake.</p>
+    <fieldset class={fieldShell} data-step="1">
+      <label for="business_type" class={labelClass}>1. What kind of business do you run?</label>
+      <p id="business_type_help" class={helperClass}>Choose the closest fit so we can recommend the right website workflow.</p>
+      <select id="business_type" name="business_type" aria-describedby="business_type_help" class={inputClass}>
+        <option value="">Select the closest fit</option>
+        {businessTypes.map((option) => <option value={option}>{option}</option>)}
+      </select>
+    </fieldset>
 
-    <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-      {
-        whatShouldDoOptions.map((opt, i) => (
-          <label class="flex cursor-pointer items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-3 transition hover:border-slate-300">
-            <input
-              type="checkbox"
-              name="website_do[]"
-              value={opt}
-              class="mt-1 h-4 w-4 accent-slate-900"
-            />
-            <span class="text-sm leading-tight text-slate-800">{opt}</span>
+    <fieldset class={fieldShell} data-step="2">
+      <legend class={labelClass}>2. Where do you want to get customers from?</legend>
+      <p id="customer_area_help" class={helperClass}>Choose the places you actually serve. This helps shape the plan without inventing public service-area claims.</p>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        {customerAreas.map((option) => (
+          <label class={checkboxClass}>
+            <input type="checkbox" name="customer_areas[]" value={option} class="mt-0.5 h-5 w-5 accent-[#c66b3d]" />
+            <span>{option}</span>
           </label>
-        ))
-      }
+        ))}
+      </div>
+    </fieldset>
+
+    <fieldset class={fieldShell} data-step="3">
+      <legend class={labelClass}>3. What should your website help your business do first?</legend>
+      <p id="goals_help" class={helperClass}>Pick the outcomes that matter most.</p>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        {goals.map((option) => (
+          <label class={checkboxClass}>
+            <input type="checkbox" name="goals[]" value={option} class="mt-0.5 h-5 w-5 accent-[#c66b3d]" />
+            <span>{option}</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+
+    <fieldset class={fieldShell} data-step="4">
+      <legend class={labelClass}>4. Which actions should visitors be able to take on the site?</legend>
+      <p id="visitor_actions_help" class={helperClass}>Select the actions you want customers to take without back-and-forth calls.</p>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        {visitorActions.map((option) => (
+          <label class={checkboxClass}>
+            <input type="checkbox" name="visitor_actions[]" value={option} class="mt-0.5 h-5 w-5 accent-[#c66b3d]" />
+            <span>{option}</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+
+    <RecommendationPanel variant="mobile" />
+
+    <fieldset class={fieldShell} data-step="5">
+      <legend class={labelClass}>5. Do customers need online booking, scheduling, rides, or reservations?</legend>
+      <p id="booking_need_help" class={helperClass}>Examples: appointment booking, consultation scheduling, shuttle or private ride booking, table requests, event reservation requests.</p>
+      <div class="mt-4 grid gap-3 sm:grid-cols-3">
+        {['Yes', 'No', 'Not sure'].map((option) => (
+          <label class={checkboxClass}>
+            <input type="radio" name="booking_need" value={option} class="mt-0.5 h-5 w-5 accent-[#c66b3d]" />
+            <span>{option}</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+
+    <fieldset class={fieldShell} data-step="6">
+      <legend class={labelClass}>6. Do you need quote requests or customer intake forms?</legend>
+      <p id="intake_need_help" class={helperClass}>Examples: service estimates, job details, project scope, new-client intake, patient inquiry, event inquiry.</p>
+      <div class="mt-4 grid gap-3 sm:grid-cols-3">
+        {['Yes', 'No', 'Not sure'].map((option) => (
+          <label class={checkboxClass}>
+            <input type="radio" name="intake_need" value={option} class="mt-0.5 h-5 w-5 accent-[#c66b3d]" />
+            <span>{option}</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+
+    <fieldset class={fieldShell} data-step="7">
+      <legend class={labelClass}>7. Do you want help getting more calls and clicks from Google or Google Business Profile?</legend>
+      <p id="local_seo_help" class={helperClass}>Choose all that apply.</p>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        {localSeoOptions.map((option) => (
+          <label class={checkboxClass}>
+            <input type="checkbox" name="local_seo[]" value={option} class="mt-0.5 h-5 w-5 accent-[#c66b3d]" />
+            <span>{option}</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+
+    <fieldset class={fieldShell} data-step="8">
+      <legend class={labelClass}>8. What repetitive work should be automated?</legend>
+      <p id="automation_help" class={helperClass}>Pick the repeat tasks that slow down your team.</p>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        {automationOptions.map((option) => (
+          <label class={checkboxClass}>
+            <input type="checkbox" name="automation[]" value={option} class="mt-0.5 h-5 w-5 accent-[#c66b3d]" />
+            <span>{option}</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+
+    <fieldset class={fieldShell} data-step="9">
+      <legend class={labelClass}>9. Would AI workflow agents help your business?</legend>
+      <p id="ai_help_help" class={helperClass}>Practical examples: instant first response, missing-info collection, lead qualification, appointment reminders, FAQ replies, after-hours intake, handoff to a real person.</p>
+      <div class="mt-4 grid gap-3 sm:grid-cols-3">
+        {['Yes', 'No', 'Not sure'].map((option) => (
+          <label class={checkboxClass}>
+            <input type="radio" name="ai_help" value={option} class="mt-0.5 h-5 w-5 accent-[#c66b3d]" />
+            <span>{option}</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+
+    <fieldset class={fieldShell} data-step="10">
+      <label for="current_problem" class={labelClass}>10. What is your current website or Google Business Profile, and what is not working?</label>
+      <p id="current_problem_help" class={helperClass}>Paste your site or GBP link if you have one, then tell us the main bottleneck.</p>
+      <textarea id="current_problem" name="current_problem" rows="5" aria-describedby="current_problem_help" class={inputClass} placeholder="Example: current site link, GBP link, and the lead quality or conversion issue."></textarea>
+    </fieldset>
+
+    <fieldset class={fieldShell} data-step="11">
+      <legend class={labelClass}>11. Do you already have a domain?</legend>
+      <p id="domain_status_help" class={helperClass}>We only need launch readiness here. Do not share registrar credentials.</p>
+      <div class="mt-4 grid gap-3 sm:grid-cols-3">
+        {['Yes', 'No', 'Not sure'].map((option) => (
+          <label class={checkboxClass}>
+            <input type="radio" name="domain_status" value={option} class="mt-0.5 h-5 w-5 accent-[#c66b3d]" />
+            <span>{option}</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+
+    <fieldset class={fieldShell} data-step="12">
+      <label for="domain_name" class={labelClass}>12. What domain should this use, if known?</label>
+      <p id="domain_name_help" class={helperClass}>Example: yourbusiness.com. Leave blank if you need help choosing one. Do not share login or transfer credentials.</p>
+      <input id="domain_name" name="domain_name" type="text" aria-describedby="domain_name_help" class={inputClass} placeholder="yourbusiness.com" />
+    </fieldset>
+
+    <fieldset class={fieldShell} data-step="13">
+      <label for="launch_window" class={labelClass}>13. When are you trying to launch?</label>
+      <p id="launch_window_help" class={helperClass}>A rough window is enough.</p>
+      <select id="launch_window" name="launch_window" aria-describedby="launch_window_help" class={inputClass}>
+        <option value="">Select a launch window</option>
+        {launchWindows.map((option) => <option value={option}>{option}</option>)}
+      </select>
+    </fieldset>
+
+    <fieldset class={fieldShell} data-step="14">
+      <label for="business_name" class={labelClass}>14. Business name</label>
+      <p id="business_name_help" class={helperClass}>Where should we attach this plan?</p>
+      <input id="business_name" name="business_name" type="text" autocomplete="organization" aria-describedby="business_name_help" class={inputClass} placeholder="Your business name" />
+    </fieldset>
+
+    <fieldset class={fieldShell} data-step="15">
+      <label for="contact_name" class={labelClass}>15. Contact name</label>
+      <p id="contact_name_help" class={helperClass}>Who should receive the plan?</p>
+      <input id="contact_name" name="contact_name" type="text" autocomplete="name" aria-describedby="contact_name_help" class={inputClass} placeholder="Your name" />
+    </fieldset>
+
+    <fieldset class={fieldShell} data-step="16">
+      <label for="work_email" class={labelClass}>16. Work email</label>
+      <p id="work_email_help" class={helperClass}>We will use this to follow up on the plan.</p>
+      <input id="work_email" name="work_email" type="email" autocomplete="email" aria-describedby="work_email_help" class={inputClass} placeholder="name@business.com" />
+    </fieldset>
+
+    <fieldset class={fieldShell} data-step="17">
+      <label for="best_phone" class={labelClass}>17. Best phone</label>
+      <p id="best_phone_help" class={helperClass}>Optional, but helpful if the recommended plan includes calls, booking, or urgent launch work.</p>
+      <input id="best_phone" name="best_phone" type="tel" autocomplete="tel" aria-describedby="best_phone_help" class={inputClass} placeholder="Best phone number" />
+    </fieldset>
+
+    <fieldset class={fieldShell} data-step="18">
+      <legend class={labelClass}>18. Preferred follow-up method</legend>
+      <p id="followup_method_help" class={helperClass}>Choose the easiest way to continue after your plan is generated.</p>
+      <div class="mt-4 grid gap-3 sm:grid-cols-3">
+        {followUpMethods.map((option) => (
+          <label class={checkboxClass}>
+            <input type="radio" name="followup_method" value={option} class="mt-0.5 h-5 w-5 accent-[#c66b3d]" />
+            <span>{option}</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+
+    <div class="rounded-[1.4rem] border border-[#d4cab8] bg-white p-5 shadow-sm">
+      <button
+        type="submit"
+        class="inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-[#c66b3d] px-7 py-3 text-sm font-black uppercase tracking-[0.12em] text-white transition hover:bg-[#a95530] focus:outline-none focus:ring-2 focus:ring-[#c66b3d] focus:ring-offset-2 sm:w-auto"
+      >
+        Get My Recommended Website Plan
+      </button>
+      <p class="mt-3 max-w-2xl text-xs leading-5 text-[#66736d]">
+        Placeholder only. No data leaves your browser until a real endpoint is wired. Your plan still assembles locally from the answers above.
+      </p>
     </div>
-    <p class="mt-3 text-[11px] text-slate-500">Most serious projects need 2–4 of these working together.</p>
-  </fieldset>
 
-  <!-- Business + Contact -->
-  <fieldset class="rounded-3xl border border-slate-200 bg-white p-6 md:p-8">
-    <legend class="px-1 text-sm font-semibold tracking-[0.08em] text-slate-500">2. YOUR BUSINESS</legend>
-
-    <div class="mt-4 grid grid-cols-1 gap-x-4 gap-y-5 md:grid-cols-2">
-      <div>
-        <label for="business_name" class="block text-sm font-medium text-slate-700">Business name <span class="text-red-600">*</span></label>
-        <input id="business_name" name="business_name" type="text" required autocomplete="organization"
-               class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm placeholder:text-slate-400 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500" placeholder="Acme Plumbing LLC" />
+    <div id="success-panel" class="hidden rounded-[1.6rem] border border-[#9cc7a8] bg-[#eff8f0] p-6 text-[#22332d]">
+      <h3 class="text-2xl font-black tracking-[-0.03em]">Your recommended website plan is ready</h3>
+      <p class="mt-3 text-sm leading-6 text-[#48564f]">
+        Review the recommended structure, add-ons, and launch notes below. This gives us a strong starting point
+        so the next conversation can focus on scope, timing, and the fastest useful path to launch.
+      </p>
+      <div class="mt-4 flex flex-col gap-3 sm:flex-row">
+        <button type="button" id="copy-payload-btn" class="min-h-11 rounded-xl border border-[#9cc7a8] bg-white px-4 py-2 text-sm font-bold text-[#22332d] hover:bg-[#f8fff8]">
+          Copy plan payload
+        </button>
+        <button type="button" id="reset-form-btn" class="min-h-11 rounded-xl px-4 py-2 text-sm font-bold text-[#22332d] underline-offset-4 hover:underline">
+          Start new plan
+        </button>
       </div>
-
-      <div>
-        <label for="business_type" class="block text-sm font-medium text-slate-700">Business type</label>
-        <input id="business_type" name="business_type" type="text" autocomplete="off"
-               class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm placeholder:text-slate-400 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500" placeholder="Plumbing / HVAC / Law firm / Clinic / Shuttle / ..." />
-      </div>
-
-      <div>
-        <label for="contact_name" class="block text-sm font-medium text-slate-700">Contact name <span class="text-red-600">*</span></label>
-        <input id="contact_name" name="contact_name" type="text" required autocomplete="name"
-               class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm placeholder:text-slate-400 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500" placeholder="Alex Rivera" />
-      </div>
-
-      <div>
-        <label for="email" class="block text-sm font-medium text-slate-700">Email <span class="text-red-600">*</span></label>
-        <input id="email" name="email" type="email" required autocomplete="email"
-               class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm placeholder:text-slate-400 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500" placeholder="alex@acme.com" />
-      </div>
-
-      <div>
-        <label for="phone" class="block text-sm font-medium text-slate-700">Phone</label>
-        <input id="phone" name="phone" type="tel" autocomplete="tel"
-               class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm placeholder:text-slate-400 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500" placeholder="(507) 555-0192" />
-      </div>
-
-      <div>
-        <label for="website_or_gbp" class="block text-sm font-medium text-slate-700">Current website or Google Business Profile</label>
-        <input id="website_or_gbp" name="website_or_gbp" type="url" autocomplete="url"
-               class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm placeholder:text-slate-400 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500" placeholder="https://acmeplumbing.com or GBP link" />
-      </div>
+      <pre id="payload-echo" class="mt-4 max-h-72 overflow-auto rounded-2xl bg-white p-4 text-xs leading-5 text-[#394941] ring-1 ring-[#c8decf]"></pre>
     </div>
-  </fieldset>
-
-  <!-- Problem + Urgency + Budget + Notes -->
-  <fieldset class="rounded-3xl border border-slate-200 bg-white p-6 md:p-8">
-    <legend class="px-1 text-sm font-semibold tracking-[0.08em] text-slate-500">3. THE BOTTLENECK + TIMING</legend>
-
-    <div class="mt-4 space-y-5">
-      <div>
-        <label for="current_problem" class="block text-sm font-medium text-slate-700">What is the current problem or bottleneck? <span class="text-red-600">*</span></label>
-        <textarea id="current_problem" name="current_problem" required rows={4}
-                  class="mt-1 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm placeholder:text-slate-400 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500"
-                  placeholder="We get calls from the website but they are vague. Half the leads are tire-kickers. We spend evenings chasing details that should have been captured up front."></textarea>
-        <p class="mt-1 text-xs text-slate-500">Be specific. This drives the right scope.</p>
-      </div>
-
-      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <div>
-          <label for="urgency" class="block text-sm font-medium text-slate-700">Desired launch urgency</label>
-          <select id="urgency" name="urgency" class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500">
-            <option value="">Select...</option>
-            {urgencyOptions.map(o => <option value={o}>{o}</option>)}
-          </select>
-        </div>
-
-        <div>
-          <label for="budget_range" class="block text-sm font-medium text-slate-700">Budget comfort range (optional)</label>
-          <select id="budget_range" name="budget_range" class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500">
-            <option value="">Prefer not to say yet</option>
-            <option value="under-4k">Under $4,000 (focused launch)</option>
-            <option value="4-8k">$4,000 – $8,000 (homepage + intake)</option>
-            <option value="8-15k">$8,000 – $15,000 (full system + AI starter)</option>
-            <option value="15k+">$15,000+ (multi-surface + agents + portal)</option>
-          </select>
-        </div>
-      </div>
-
-      <div>
-        <label for="notes" class="block text-sm font-medium text-slate-700">Anything else we should know?</label>
-        <textarea id="notes" name="notes" rows={3}
-                  class="mt-1 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm placeholder:text-slate-400 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500"
-                  placeholder="We have an existing site on Squarespace. Two locations. We already get decent traffic from GBP but conversion is low."></textarea>
-      </div>
-    </div>
-  </fieldset>
-
-  <!-- Submit area -->
-  <div class="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
-    <button
-      type="submit"
-      class="inline-flex items-center justify-center rounded-2xl bg-slate-900 px-8 py-3 text-sm font-semibold text-white shadow-sm transition active:scale-[0.985] hover:bg-black focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2"
-    >
-      Submit intake
-    </button>
-    <p class="text-xs text-slate-500 max-w-prose">
-      Placeholder only. No data leaves your browser until a real endpoint is wired. See the footer and README.
-    </p>
   </div>
 
-  <!-- Success panel (shown by JS on placeholder submit) -->
-  <div id="success-panel" class="hidden rounded-3xl border border-emerald-200 bg-emerald-50 p-6 md:p-8">
-    <div class="flex items-start gap-3">
-      <div class="mt-0.5 text-emerald-600">✓</div>
-      <div class="flex-1">
-        <p class="font-semibold text-emerald-900">Intake captured (placeholder)</p>
-        <p class="mt-1 text-sm text-emerald-800">
-          This form is not yet connected to any backend, email, or CRM. Your responses are shown below for your records.
-          When the handler is live we will send a structured record and follow up within one business day.
-        </p>
-
-        <div class="mt-4">
-          <button type="button" id="copy-payload-btn"
-                  class="rounded-xl border border-emerald-300 bg-white px-4 py-1.5 text-xs font-medium text-emerald-900 hover:bg-emerald-100">
-            Copy payload as JSON
-          </button>
-          <button type="button" id="reset-form-btn"
-                  class="ml-2 rounded-xl px-4 py-1.5 text-xs font-medium text-emerald-900 underline-offset-2 hover:underline">
-            Start new intake
-          </button>
-        </div>
-
-        <pre id="payload-echo" class="mt-4 max-h-64 overflow-auto rounded-2xl bg-white p-4 text-[11px] leading-snug text-slate-700 ring-1 ring-inset ring-emerald-100"></pre>
-      </div>
-    </div>
+  <div class="hidden lg:block">
+    <RecommendationPanel variant="desktop" />
   </div>
 </form>
 
 <script>
-  // Explicit placeholder submit implementation.
-  // Does NOT pretend to send anywhere.
-  // Matches contract: "implement a safe placeholder submit flow and clearly document what remains."
-  // Inspiration from reference: late collection of contact after qualification + review step before commit (adapted to single visible form with strong first section).
-  // LOCAL_MIRROR / CONTEXT_DERIVED
-
-  const form = document.getElementById('intake-form') as HTMLFormElement | null;
+  const form = document.getElementById('website-plan-form') as HTMLFormElement | null;
   const statusEl = document.getElementById('form-status') as HTMLDivElement | null;
   const successPanel = document.getElementById('success-panel') as HTMLDivElement | null;
   const payloadEcho = document.getElementById('payload-echo') as HTMLPreElement | null;
   const copyBtn = document.getElementById('copy-payload-btn') as HTMLButtonElement | null;
   const resetBtn = document.getElementById('reset-form-btn') as HTMLButtonElement | null;
+  const panels = Array.from(document.querySelectorAll('[data-plan-panel]')) as HTMLElement[];
 
-  let lastPayload: Record<string, unknown> | null = null;
+  const planState = {
+    payload: null as Record<string, unknown> | null,
+  };
 
-  function showStatus(msg: string, kind: 'warn' | 'error' = 'warn') {
+  function checkedValues(name: string): string[] {
+    if (!form) return [];
+    return Array.from(form.querySelectorAll(`input[name="${name}"]:checked`)).map((input) => (input as HTMLInputElement).value);
+  }
+
+  function fieldValue(name: string): string {
+    if (!form) return '';
+    const field = form.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | RadioNodeList | null;
+    if (!field) return '';
+    if ('value' in field) return String(field.value || '').trim();
+    return '';
+  }
+
+  function answeredStep(step: number): boolean {
+    switch (step) {
+      case 1: return Boolean(fieldValue('business_type'));
+      case 2: return checkedValues('customer_areas[]').length > 0;
+      case 3: return checkedValues('goals[]').length > 0;
+      case 4: return checkedValues('visitor_actions[]').length > 0;
+      case 5: return Boolean(fieldValue('booking_need'));
+      case 6: return Boolean(fieldValue('intake_need'));
+      case 7: return checkedValues('local_seo[]').length > 0;
+      case 8: return checkedValues('automation[]').length > 0;
+      case 9: return Boolean(fieldValue('ai_help'));
+      case 10: return Boolean(fieldValue('current_problem'));
+      case 11: return Boolean(fieldValue('domain_status'));
+      case 12: return Boolean(fieldValue('domain_name'));
+      case 13: return Boolean(fieldValue('launch_window'));
+      case 14: return Boolean(fieldValue('business_name'));
+      case 15: return Boolean(fieldValue('contact_name'));
+      case 16: return Boolean(fieldValue('work_email'));
+      case 17: return Boolean(fieldValue('best_phone'));
+      case 18: return Boolean(fieldValue('followup_method'));
+      default: return false;
+    }
+  }
+
+  function chip(text: string): HTMLSpanElement {
+    const span = document.createElement('span');
+    span.className = 'rounded-full bg-white/12 px-3 py-1 text-xs font-bold text-[#fbfaf6]';
+    span.textContent = text;
+    return span;
+  }
+
+  function emptyChip(text: string): HTMLSpanElement {
+    const span = document.createElement('span');
+    span.className = 'rounded-full bg-white/10 px-3 py-1 text-xs text-[#dbe4df]';
+    span.textContent = text;
+    return span;
+  }
+
+  function hasBookingSignal(actions: string[], bookingNeed: string): boolean {
+    return bookingNeed === 'Yes' || actions.some((value) => ['book an appointment', 'schedule a consultation', 'request a ride'].includes(value));
+  }
+
+  function hasQuoteIntakeSignal(actions: string[], intakeNeed: string): boolean {
+    return intakeNeed === 'Yes' || actions.some((value) => ['request a quote', 'fill out an intake form'].includes(value));
+  }
+
+  function buildRecommendation() {
+    const goals = checkedValues('goals[]');
+    const actions = checkedValues('visitor_actions[]');
+    const localSeo = checkedValues('local_seo[]');
+    const automation = checkedValues('automation[]');
+    const bookingNeed = fieldValue('booking_need');
+    const intakeNeed = fieldValue('intake_need');
+    const aiHelp = fieldValue('ai_help');
+    const domainStatus = fieldValue('domain_status');
+    const domainName = fieldValue('domain_name');
+    const launchWindow = fieldValue('launch_window');
+
+    const booking = hasBookingSignal(actions, bookingNeed);
+    const quoteIntake = hasQuoteIntakeSignal(actions, intakeNeed);
+    const local = localSeo.length > 0;
+    const ai = aiHelp === 'Yes' || aiHelp === 'Not sure';
+    const automationSelected = automation.length > 0;
+
+    let packageDirection = 'Starter Workflow Homepage';
+    if (booking || quoteIntake) packageDirection = 'Conversion Intake Site';
+    if (local) packageDirection = 'Workflow + Local SEO Site';
+
+    const addons: string[] = [];
+    if (local) addons.push('Local SEO / GBP');
+    if (booking) addons.push('Booking');
+    if (quoteIntake) addons.push('Quote / intake');
+    if (automationSelected) addons.push('Workflow automation');
+    if (ai) addons.push('AI follow-up');
+    if (domainStatus === 'No' || domainStatus === 'Not sure' || (!domainName && domainStatus && domainStatus !== 'Yes')) addons.push('Domain setup');
+
+    const sections = ['homepage'];
+    if (goals.length || actions.length) sections.push('customer-action path');
+    if (local) sections.push('local SEO / GBP conversion structure');
+    if (booking) sections.push('booking or scheduling flow');
+    if (quoteIntake) sections.push('quote / customer intake flow');
+    if (automationSelected || ai) sections.push('workflow automation and AI handoff notes');
+    sections.push('launch readiness notes');
+
+    const launchText = domainStatus || launchWindow
+      ? `${domainStatus ? `Domain: ${domainStatus}` : 'Domain: not answered yet'}${domainName ? ` (${domainName})` : ''}${launchWindow ? `; launch window: ${launchWindow}` : '; launch window not answered yet'}`
+      : 'Domain and launch window will appear after the core intent questions.';
+
+    const answeredCount = Array.from({ length: 18 }, (_, index) => index + 1).filter(answeredStep).length;
+    const maxAnswered = Array.from({ length: 18 }, (_, index) => index + 1).filter(answeredStep).pop() || 0;
+    const nextStep = Math.min(maxAnswered + 1, 18);
+    const ready = answeredCount >= 18;
+
+    let heading = 'Your plan so far';
+    let summary = 'Answer the questions and your recommended website structure will appear here.';
+    if (goals.length) {
+      summary = 'Your selected outcomes are shaping the homepage, services overview, local trust section, and customer-action path.';
+    }
+    if (booking || quoteIntake) {
+      summary = 'A booking, quote, or intake flow is now part of the plan so visitors can take action without back-and-forth calls.';
+    }
+    if (local) {
+      summary = 'Local SEO / GBP conversion structure is now included so Google traffic has a clearer path into calls, clicks, bookings, or quote requests.';
+    }
+    if (automationSelected || ai) {
+      summary = 'Workflow automation and AI workflow agents can support first response, missing-info collection, lead routing, reminders, customer intake, and human handoff.';
+    }
+    if (ready) {
+      heading = 'Your recommended website plan is ready';
+      summary = 'Review the sections, add-ons, and launch notes below. The plan is assembled from the intent, launch, and contact details you provided.';
+    }
+
+    return {
+      packageDirection,
+      addons,
+      sections,
+      goals,
+      actions,
+      launchText,
+      answeredCount,
+      nextStep,
+      ready,
+      heading,
+      summary,
+    };
+  }
+
+  function updatePanels() {
+    const rec = buildRecommendation();
+    panels.forEach((panel) => {
+      panel.querySelector<HTMLElement>('[data-plan-heading]')!.textContent = rec.heading;
+      panel.querySelector<HTMLElement>('[data-plan-summary]')!.textContent = rec.summary;
+      panel.querySelector<HTMLElement>('[data-package-direction]')!.textContent = rec.packageDirection;
+      panel.querySelector<HTMLElement>('[data-recommended-structure]')!.textContent = rec.sections.join(', ');
+      panel.querySelector<HTMLElement>('[data-launch-readiness]')!.textContent = rec.launchText;
+
+      const progressWidth = Math.max(6, Math.round((rec.answeredCount / 18) * 100));
+      panel.querySelector<HTMLElement>('[data-progress-bar]')!.style.width = `${progressWidth}%`;
+      panel.querySelector<HTMLElement>('[data-progress-label]')!.textContent = rec.ready
+        ? 'Progress: Ready to generate'
+        : `Progress: Step ${rec.nextStep} of 18`;
+
+      const outcomes = panel.querySelector<HTMLElement>('[data-outcome-chips]')!;
+      outcomes.textContent = '';
+      const selectedOutcomes = rec.goals.length ? rec.goals : rec.actions;
+      if (selectedOutcomes.length) selectedOutcomes.forEach((value) => outcomes.appendChild(chip(value)));
+      else outcomes.appendChild(emptyChip('Waiting for outcomes'));
+
+      const addons = panel.querySelector<HTMLElement>('[data-addon-chips]')!;
+      addons.textContent = '';
+      if (rec.addons.length) rec.addons.forEach((value) => addons.appendChild(chip(value)));
+      else addons.appendChild(emptyChip('None yet'));
+    });
+  }
+
+  function collectPayload(): Record<string, unknown> {
+    return {
+      business_type: fieldValue('business_type'),
+      customer_areas: checkedValues('customer_areas[]'),
+      goals: checkedValues('goals[]'),
+      visitor_actions: checkedValues('visitor_actions[]'),
+      booking_need: fieldValue('booking_need'),
+      intake_need: fieldValue('intake_need'),
+      local_seo: checkedValues('local_seo[]'),
+      automation: checkedValues('automation[]'),
+      ai_help: fieldValue('ai_help'),
+      current_problem: fieldValue('current_problem'),
+      domain_status: fieldValue('domain_status'),
+      domain_name: fieldValue('domain_name'),
+      launch_window: fieldValue('launch_window'),
+      business_name: fieldValue('business_name'),
+      contact_name: fieldValue('contact_name'),
+      work_email: fieldValue('work_email'),
+      best_phone: fieldValue('best_phone'),
+      followup_method: fieldValue('followup_method'),
+      recommendation: buildRecommendation(),
+      submitted_at: new Date().toISOString(),
+      _note: 'PLACEHOLDER_SUBMIT - not transmitted. Generated locally from homepage v2 intake.',
+    };
+  }
+
+  function showStatus(message: string, kind: 'error' | 'warn' = 'warn') {
     if (!statusEl) return;
-    statusEl.textContent = msg;
+    statusEl.textContent = message;
     statusEl.className = kind === 'error'
       ? 'rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800'
       : 'rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800';
@@ -211,97 +518,63 @@ const urgencyOptions = [
   }
 
   function hideStatus() {
-    if (statusEl) statusEl.classList.add('hidden');
+    statusEl?.classList.add('hidden');
   }
 
-  function collectPayload(f: HTMLFormElement): Record<string, unknown> {
-    const data = new FormData(f);
-    const payload: Record<string, unknown> = {};
-
-    // Simple fields
-    for (const [k, v] of data.entries()) {
-      if (k === 'website_do[]') {
-        if (!payload.website_do) payload.website_do = [];
-        (payload.website_do as string[]).push(String(v));
-      } else {
-        payload[k] = typeof v === 'string' ? v.trim() : v;
-      }
-    }
-
-    // Add client timestamp + note
-    payload.submitted_at = new Date().toISOString();
-    payload._note = 'PLACEHOLDER_SUBMIT — not transmitted. See kmxmedia-com-site README.';
-    return payload;
-  }
-
-  function validate(payload: Record<string, unknown>): string | null {
-    if (!payload.business_name) return 'Business name is required.';
-    if (!payload.contact_name) return 'Contact name is required.';
-    if (!payload.email) return 'Email is required.';
-    if (!payload.current_problem) return 'Please describe the current bottleneck.';
-    const goals = (payload.website_do as string[] | undefined) || [];
-    if (goals.length === 0) return 'Select at least one thing the website should accomplish.';
+  function validate(): string | null {
+    if (!checkedValues('goals[]').length) return 'Select at least one outcome the website should help with.';
+    if (!checkedValues('visitor_actions[]').length) return 'Select at least one customer action visitors should be able to take.';
+    if (!fieldValue('business_name')) return 'Business name is needed to attach the generated plan.';
+    if (!fieldValue('contact_name')) return 'Contact name is needed for the plan.';
+    if (!fieldValue('work_email')) return 'Work email is needed for follow-up on the generated plan.';
     return null;
   }
 
   if (form) {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
+    updatePanels();
+    form.addEventListener('input', updatePanels);
+    form.addEventListener('change', updatePanels);
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
       hideStatus();
 
-      const payload = collectPayload(form);
-      const err = validate(payload);
-      if (err) {
-        showStatus(err, 'error');
+      const error = validate();
+      if (error) {
+        showStatus(error, 'error');
         return;
       }
 
-      lastPayload = payload;
+      const payload = collectPayload();
+      planState.payload = payload;
+      updatePanels();
 
-      // Show success (placeholder)
-      if (successPanel && payloadEcho) {
-        payloadEcho.textContent = JSON.stringify(payload, null, 2);
-        successPanel.classList.remove('hidden');
-        successPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-
-      // Keep form visible but disabled-ish for review
-      form.querySelectorAll('input,select,textarea,button[type="submit"]').forEach((el) => {
-        (el as HTMLInputElement | HTMLButtonElement).disabled = true;
-      });
-
-      // Console for devs
-      // eslint-disable-next-line no-console
-      console.info('[KMX Intake Placeholder] Collected payload (NOT SENT):', payload);
+      if (payloadEcho) payloadEcho.textContent = JSON.stringify(payload, null, 2);
+      successPanel?.classList.remove('hidden');
+      successPanel?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   }
 
-  if (copyBtn) {
-    copyBtn.addEventListener('click', async () => {
-      if (!lastPayload) return;
-      try {
-        await navigator.clipboard.writeText(JSON.stringify(lastPayload, null, 2));
-        const orig = copyBtn.textContent;
-        copyBtn.textContent = 'Copied!';
-        setTimeout(() => { if (copyBtn) copyBtn.textContent = orig || 'Copy payload as JSON'; }, 1400);
-      } catch {
-        alert('Copy failed — payload is in the pre block above. Select and copy manually.');
-      }
-    });
-  }
+  copyBtn?.addEventListener('click', async () => {
+    if (!planState.payload) return;
+    try {
+      await navigator.clipboard.writeText(JSON.stringify(planState.payload, null, 2));
+      const previous = copyBtn.textContent;
+      copyBtn.textContent = 'Copied';
+      window.setTimeout(() => {
+        copyBtn.textContent = previous || 'Copy plan payload';
+      }, 1400);
+    } catch {
+      showStatus('Copy failed. The generated payload is visible below and can be selected manually.', 'warn');
+    }
+  });
 
-  if (resetBtn) {
-    resetBtn.addEventListener('click', () => {
-      if (form) {
-        form.reset();
-        form.querySelectorAll('input,select,textarea,button[type="submit"]').forEach((el) => {
-          (el as HTMLInputElement | HTMLButtonElement).disabled = false;
-        });
-      }
-      if (successPanel) successPanel.classList.add('hidden');
-      if (statusEl) statusEl.classList.add('hidden');
-      lastPayload = null;
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  }
+  resetBtn?.addEventListener('click', () => {
+    form?.reset();
+    planState.payload = null;
+    payloadEcho!.textContent = '';
+    successPanel?.classList.add('hidden');
+    hideStatus();
+    updatePanels();
+    document.getElementById('intake-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
 </script>
