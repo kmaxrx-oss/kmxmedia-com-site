@@ -71,9 +71,9 @@ const followUpMethods = ['Email', 'Phone', 'Text'];
 const fieldShell = 'rounded-[1.4rem] border border-[#e0d5c5] bg-white p-5 shadow-sm';
 const labelClass = 'block text-base font-black tracking-[-0.01em] text-[#22332d]';
 const helperClass = 'mt-2 text-sm leading-6 text-[#66736d]';
-const inputClass = 'mt-3 min-h-12 w-full rounded-2xl border border-[#d4cab8] bg-[#fffdf8] px-4 py-3 text-base text-[#22332d] shadow-sm outline-none transition placeholder:text-[#9b9184] focus:border-[#c66b3d] focus:ring-2 focus:ring-[#c66b3d]/25';
+const inputClass = 'kmx-focus-visible mt-3 min-h-12 w-full rounded-2xl border border-[#d4cab8] bg-[#fffdf8] px-4 py-3 text-base text-[#22332d] shadow-sm transition placeholder:text-[#9b9184] focus:border-[#a95530] focus:outline-solid focus:outline-3 focus:outline-[#a95530] focus:outline-offset-3 focus:ring-4 focus:ring-[#f1c29b]/70 focus-visible:border-[#a95530] focus-visible:outline-solid focus-visible:outline-3 focus-visible:outline-[#a95530] focus-visible:outline-offset-3 focus-visible:ring-4 focus-visible:ring-[#f1c29b]/70';
 
-const checkboxClass = 'flex min-h-12 cursor-pointer items-start gap-3 rounded-2xl border border-[#e0d5c5] bg-[#fffdf8] px-4 py-3 text-sm leading-5 text-[#394941] transition hover:border-[#c66b3d] has-[:checked]:border-[#c66b3d] has-[:checked]:bg-[#fff1e7]';
+const checkboxClass = 'kmx-choice-card flex min-h-12 cursor-pointer items-start gap-3 rounded-2xl border border-[#e0d5c5] bg-[#fffdf8] px-4 py-3 text-sm leading-5 text-[#394941] transition hover:border-[#c66b3d] has-[:checked]:border-[#c66b3d] has-[:checked]:bg-[#fff1e7] has-[:focus-visible]:border-[#a95530] has-[:focus-visible]:outline-solid has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-[#a95530] has-[:focus-visible]:outline-offset-3 has-[:focus-visible]:ring-4 has-[:focus-visible]:ring-[#f1c29b]/70';
 ---
 
 <form id="website-plan-form" class="grid gap-6 lg:grid-cols-[minmax(0,1.45fr)_minmax(320px,0.8fr)]" novalidate>
@@ -95,7 +95,7 @@ const checkboxClass = 'flex min-h-12 cursor-pointer items-start gap-3 rounded-2x
       <div class="mt-4 grid gap-3 sm:grid-cols-2">
         {customerAreas.map((option) => (
           <label class={checkboxClass}>
-            <input type="checkbox" name="customer_areas[]" value={option} class="mt-0.5 h-5 w-5 accent-[#c66b3d]" />
+            <input type="checkbox" name="customer_areas[]" value={option} class="kmx-choice-control mt-0.5 h-5 w-5 accent-[#c66b3d] focus:outline-solid focus:outline-2 focus:outline-[#a95530] focus:outline-offset-2 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-[#a95530] focus-visible:outline-offset-2" />
             <span>{option}</span>
           </label>
         ))}
@@ -108,7 +108,7 @@ const checkboxClass = 'flex min-h-12 cursor-pointer items-start gap-3 rounded-2x
       <div class="mt-4 grid gap-3 sm:grid-cols-2">
         {goals.map((option) => (
           <label class={checkboxClass}>
-            <input type="checkbox" name="goals[]" value={option} class="mt-0.5 h-5 w-5 accent-[#c66b3d]" />
+            <input type="checkbox" name="goals[]" value={option} class="kmx-choice-control mt-0.5 h-5 w-5 accent-[#c66b3d] focus:outline-solid focus:outline-2 focus:outline-[#a95530] focus:outline-offset-2 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-[#a95530] focus-visible:outline-offset-2" />
             <span>{option}</span>
           </label>
         ))}
@@ -121,7 +121,7 @@ const checkboxClass = 'flex min-h-12 cursor-pointer items-start gap-3 rounded-2x
       <div class="mt-4 grid gap-3 sm:grid-cols-2">
         {visitorActions.map((option) => (
           <label class={checkboxClass}>
-            <input type="checkbox" name="visitor_actions[]" value={option} class="mt-0.5 h-5 w-5 accent-[#c66b3d]" />
+            <input type="checkbox" name="visitor_actions[]" value={option} class="kmx-choice-control mt-0.5 h-5 w-5 accent-[#c66b3d] focus:outline-solid focus:outline-2 focus:outline-[#a95530] focus:outline-offset-2 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-[#a95530] focus-visible:outline-offset-2" />
             <span>{option}</span>
           </label>
         ))}
@@ -136,7 +136,7 @@ const checkboxClass = 'flex min-h-12 cursor-pointer items-start gap-3 rounded-2x
       <div class="mt-4 grid gap-3 sm:grid-cols-3">
         {['Yes', 'No', 'Not sure'].map((option) => (
           <label class={checkboxClass}>
-            <input type="radio" name="booking_need" value={option} class="mt-0.5 h-5 w-5 accent-[#c66b3d]" />
+            <input type="radio" name="booking_need" value={option} class="kmx-choice-control mt-0.5 h-5 w-5 accent-[#c66b3d] focus:outline-solid focus:outline-2 focus:outline-[#a95530] focus:outline-offset-2 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-[#a95530] focus-visible:outline-offset-2" />
             <span>{option}</span>
           </label>
         ))}
@@ -149,7 +149,7 @@ const checkboxClass = 'flex min-h-12 cursor-pointer items-start gap-3 rounded-2x
       <div class="mt-4 grid gap-3 sm:grid-cols-3">
         {['Yes', 'No', 'Not sure'].map((option) => (
           <label class={checkboxClass}>
-            <input type="radio" name="intake_need" value={option} class="mt-0.5 h-5 w-5 accent-[#c66b3d]" />
+            <input type="radio" name="intake_need" value={option} class="kmx-choice-control mt-0.5 h-5 w-5 accent-[#c66b3d] focus:outline-solid focus:outline-2 focus:outline-[#a95530] focus:outline-offset-2 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-[#a95530] focus-visible:outline-offset-2" />
             <span>{option}</span>
           </label>
         ))}
@@ -162,7 +162,7 @@ const checkboxClass = 'flex min-h-12 cursor-pointer items-start gap-3 rounded-2x
       <div class="mt-4 grid gap-3 sm:grid-cols-2">
         {localSeoOptions.map((option) => (
           <label class={checkboxClass}>
-            <input type="checkbox" name="local_seo[]" value={option} class="mt-0.5 h-5 w-5 accent-[#c66b3d]" />
+            <input type="checkbox" name="local_seo[]" value={option} class="kmx-choice-control mt-0.5 h-5 w-5 accent-[#c66b3d] focus:outline-solid focus:outline-2 focus:outline-[#a95530] focus:outline-offset-2 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-[#a95530] focus-visible:outline-offset-2" />
             <span>{option}</span>
           </label>
         ))}
@@ -175,7 +175,7 @@ const checkboxClass = 'flex min-h-12 cursor-pointer items-start gap-3 rounded-2x
       <div class="mt-4 grid gap-3 sm:grid-cols-2">
         {automationOptions.map((option) => (
           <label class={checkboxClass}>
-            <input type="checkbox" name="automation[]" value={option} class="mt-0.5 h-5 w-5 accent-[#c66b3d]" />
+            <input type="checkbox" name="automation[]" value={option} class="kmx-choice-control mt-0.5 h-5 w-5 accent-[#c66b3d] focus:outline-solid focus:outline-2 focus:outline-[#a95530] focus:outline-offset-2 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-[#a95530] focus-visible:outline-offset-2" />
             <span>{option}</span>
           </label>
         ))}
@@ -188,7 +188,7 @@ const checkboxClass = 'flex min-h-12 cursor-pointer items-start gap-3 rounded-2x
       <div class="mt-4 grid gap-3 sm:grid-cols-3">
         {['Yes', 'No', 'Not sure'].map((option) => (
           <label class={checkboxClass}>
-            <input type="radio" name="ai_help" value={option} class="mt-0.5 h-5 w-5 accent-[#c66b3d]" />
+            <input type="radio" name="ai_help" value={option} class="kmx-choice-control mt-0.5 h-5 w-5 accent-[#c66b3d] focus:outline-solid focus:outline-2 focus:outline-[#a95530] focus:outline-offset-2 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-[#a95530] focus-visible:outline-offset-2" />
             <span>{option}</span>
           </label>
         ))}
@@ -207,7 +207,7 @@ const checkboxClass = 'flex min-h-12 cursor-pointer items-start gap-3 rounded-2x
       <div class="mt-4 grid gap-3 sm:grid-cols-3">
         {['Yes', 'No', 'Not sure'].map((option) => (
           <label class={checkboxClass}>
-            <input type="radio" name="domain_status" value={option} class="mt-0.5 h-5 w-5 accent-[#c66b3d]" />
+            <input type="radio" name="domain_status" value={option} class="kmx-choice-control mt-0.5 h-5 w-5 accent-[#c66b3d] focus:outline-solid focus:outline-2 focus:outline-[#a95530] focus:outline-offset-2 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-[#a95530] focus-visible:outline-offset-2" />
             <span>{option}</span>
           </label>
         ))}
@@ -259,7 +259,7 @@ const checkboxClass = 'flex min-h-12 cursor-pointer items-start gap-3 rounded-2x
       <div class="mt-4 grid gap-3 sm:grid-cols-3">
         {followUpMethods.map((option) => (
           <label class={checkboxClass}>
-            <input type="radio" name="followup_method" value={option} class="mt-0.5 h-5 w-5 accent-[#c66b3d]" />
+            <input type="radio" name="followup_method" value={option} class="kmx-choice-control mt-0.5 h-5 w-5 accent-[#c66b3d] focus:outline-solid focus:outline-2 focus:outline-[#a95530] focus:outline-offset-2 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-[#a95530] focus-visible:outline-offset-2" />
             <span>{option}</span>
           </label>
         ))}
@@ -269,7 +269,7 @@ const checkboxClass = 'flex min-h-12 cursor-pointer items-start gap-3 rounded-2x
     <div class="rounded-[1.4rem] border border-[#d4cab8] bg-white p-5 shadow-sm">
       <button
         type="submit"
-        class="inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-[#c66b3d] px-7 py-3 text-sm font-black uppercase tracking-[0.12em] text-white transition hover:bg-[#a95530] focus:outline-none focus:ring-2 focus:ring-[#c66b3d] focus:ring-offset-2 sm:w-auto"
+        class="kmx-focus-visible inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-[#c66b3d] px-7 py-3 text-sm font-black uppercase tracking-[0.12em] text-white transition hover:bg-[#a95530] focus:outline-solid focus:outline-3 focus:outline-[#a95530] focus:outline-offset-3 focus:ring-4 focus:ring-[#f1c29b]/80 focus:ring-offset-2 focus:ring-offset-[#fffdf8] focus-visible:outline-solid focus-visible:outline-3 focus-visible:outline-[#a95530] focus-visible:outline-offset-3 focus-visible:ring-4 focus-visible:ring-[#f1c29b]/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#fffdf8] sm:w-auto"
       >
         Get My Recommended Website Plan
       </button>
@@ -285,10 +285,10 @@ const checkboxClass = 'flex min-h-12 cursor-pointer items-start gap-3 rounded-2x
         so the next conversation can focus on scope, timing, and the fastest useful path to launch.
       </p>
       <div class="mt-4 flex flex-col gap-3 sm:flex-row">
-        <button type="button" id="copy-payload-btn" class="min-h-11 rounded-xl border border-[#9cc7a8] bg-white px-4 py-2 text-sm font-bold text-[#22332d] hover:bg-[#f8fff8]">
+        <button type="button" id="copy-payload-btn" class="kmx-focus-visible-success min-h-11 rounded-xl border border-[#9cc7a8] bg-white px-4 py-2 text-sm font-bold text-[#22332d] hover:bg-[#f8fff8] focus:outline-solid focus:outline-3 focus:outline-[#2f6b47] focus:outline-offset-3 focus:ring-4 focus:ring-[#b8d9c3]/80 focus-visible:outline-solid focus-visible:outline-3 focus-visible:outline-[#2f6b47] focus-visible:outline-offset-3 focus-visible:ring-4 focus-visible:ring-[#b8d9c3]/80">
           Copy plan payload
         </button>
-        <button type="button" id="reset-form-btn" class="min-h-11 rounded-xl px-4 py-2 text-sm font-bold text-[#22332d] underline-offset-4 hover:underline">
+        <button type="button" id="reset-form-btn" class="kmx-focus-visible-success min-h-11 rounded-xl px-4 py-2 text-sm font-bold text-[#22332d] underline-offset-4 hover:underline focus:outline-solid focus:outline-3 focus:outline-[#2f6b47] focus:outline-offset-3 focus:ring-4 focus:ring-[#b8d9c3]/80 focus-visible:outline-solid focus-visible:outline-3 focus-visible:outline-[#2f6b47] focus-visible:outline-offset-3 focus-visible:ring-4 focus-visible:ring-[#b8d9c3]/80">
           Start new plan
         </button>
       </div>

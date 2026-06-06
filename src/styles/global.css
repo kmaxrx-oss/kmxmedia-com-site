@@ -1,1 +1,38 @@
 @import "tailwindcss";
+
+@layer components {
+  .kmx-focus-visible:focus,
+  .kmx-focus-visible:focus-visible {
+    outline: 3px solid #a95530;
+    outline-offset: 3px;
+    box-shadow: 0 0 0 6px rgba(241, 194, 155, 0.72);
+  }
+
+  .kmx-focus-visible-dark:focus,
+  .kmx-focus-visible-dark:focus-visible {
+    outline: 3px solid #f1c29b;
+    outline-offset: 3px;
+    box-shadow: 0 0 0 6px rgba(241, 194, 155, 0.42);
+  }
+
+  .kmx-focus-visible-success:focus,
+  .kmx-focus-visible-success:focus-visible {
+    outline: 3px solid #2f6b47;
+    outline-offset: 3px;
+    box-shadow: 0 0 0 6px rgba(184, 217, 195, 0.8);
+  }
+
+  .kmx-choice-control:focus,
+  .kmx-choice-control:focus-visible {
+    outline: 2px solid #a95530;
+    outline-offset: 2px;
+  }
+
+  .kmx-choice-card:has(.kmx-choice-control:focus),
+  .kmx-choice-card:has(.kmx-choice-control:focus-visible) {
+    border-color: #a95530;
+    outline: 3px solid #a95530;
+    outline-offset: 3px;
+    box-shadow: 0 0 0 6px rgba(241, 194, 155, 0.72);
+  }
+}
