@@ -22,3 +22,9 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Local SFTP deployment credentials (specimen copied from reference for deployment config shape only).
+# Contains secrets and host/path values from another project. Never commit or push this file.
+# We ignore only the sftp.json (not the entire .vscode/ dir, since other .vscode files like extensions/launch are tracked).
+.vscode/sftp.json
+
