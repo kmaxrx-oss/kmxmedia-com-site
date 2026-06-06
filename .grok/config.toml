@@ -6,7 +6,8 @@ primary_goal = "A conversion-first Colorado Springs web design homepage where th
 [paths]
 agents_file = "AGENTS.md"
 bucket_doc = "docs/kmxmedia-content-strategy-buckets.md"
-homepage_text_mockup = "docs/homepage-text-mockup.md"
+homepage_text_mockup = "docs/homepage-text-mockup-v2.md"
+homepage_text_mockup_checkpoint = "docs/homepage-text-mockup.md"
 schema_content_spec = "docs/schema-content-spec.md"
 ai_readable_grid_spec = "docs/ai-readable-grid-spec.md"
 media_slot_alt_inventory = "docs/media-slot-alt-inventory.md"
