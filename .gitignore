@@ -28,3 +28,7 @@ pnpm-debug.log*
 # We ignore only the sftp.json (not the entire .vscode/ dir, since other .vscode files like extensions/launch are tracked).
 .vscode/sftp.json
 
+# Self-hosted work-request API secrets (deploy config.php on server only)
+public/api/config.php
+private/
+

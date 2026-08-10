@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import ContactLinks from '../components/ContactLinks.astro';
 import IntakeForm from '../components/IntakeForm.astro';
 import JsonLd from '../components/JsonLd.astro';
 
@@ -93,7 +94,7 @@ const industryCards = [
 
 const faqs = [
   {
-    q: 'What does a Colorado Springs small business website need to do today?',
+    q: 'What does a Minnesota small business website need to do today?',
     a: 'It should help drive calls, bookings, quote requests, customer intake, and follow-up. Looking modern is useful, but the site also needs to move work forward.',
   },
   {
@@ -128,8 +129,8 @@ const faqs = [
 ---
 
 <Layout
-  title="Colorado Springs Web Design for Workflow Websites | KMX Media"
-  description="KMX Media builds Colorado Springs workflow websites that capture calls, bookings, quote requests, customer intake, and follow-up. Answer the intake and get a recommended website plan."
+  title="Northfield & Twin Cities Web Design for Workflow Websites | KMX Media"
+  description="KMX Media builds Minnesota workflow websites that capture calls, bookings, quote requests, customer intake, and follow-up. Urgent repairs from $250. Answer the intake and get a recommended website plan."
 >
   <JsonLd slot="head" />
 
@@ -152,19 +153,23 @@ const faqs = [
       <div class="mx-auto grid max-w-6xl gap-10 px-5 py-14 md:py-20 lg:grid-cols-[1fr_0.75fr] lg:items-end">
         <div>
           <p class="inline-flex rounded-full border border-[#d4cab8] bg-white/80 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-[#7a583a]">
-            Colorado Springs web design
+            Northfield &amp; Twin Cities web design
           </p>
           <h1 class="mt-5 max-w-4xl text-balance text-4xl font-black tracking-[-0.045em] text-[#1b2824] sm:text-5xl md:text-6xl">
-            Colorado Springs Web Design for Local Businesses That Need More Leads
+            Local Web Design for Minnesota Businesses That Need More Leads
           </h1>
           <p class="mt-5 max-w-3xl text-pretty text-lg leading-8 text-[#53635b] md:text-xl">
             Build a website that captures calls, bookings, quote requests, customer intake, and follow-up.
             Answer the questions below and your recommended website plan will assemble as you go.
           </p>
           <p class="mt-5 max-w-2xl text-base leading-7 text-[#596861]">
-            Most local business websites stop at information. KMX Media builds workflow websites that help
-            customers take the next action, give you cleaner lead details, and reduce the repetitive admin
-            that happens after someone clicks.
+            Most local business websites stop at information. KMX Media builds workflow websites — and fixes
+            broken ones fast — so customers take the next action, your team gets cleaner lead details, and
+            less admin piles up after someone clicks.
+          </p>
+          <p class="mt-4 max-w-2xl text-sm leading-6 text-[#6b746f]">
+            Active workflow example:
+            <a href="https://twincitiesshuttle.com" class="font-semibold text-[#a95530] underline decoration-[#e0b08e] underline-offset-2 hover:text-[#7a583a]">twincitiesshuttle.com</a>
           </p>
           <div class="mt-8">
             <a href="#intake-form" class="kmx-focus-visible inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-[#c66b3d] px-7 py-3 text-sm font-black uppercase tracking-[0.12em] text-white shadow-[0_18px_40px_rgba(198,107,61,0.25)] transition hover:bg-[#a95530] focus:outline-solid focus:outline-3 focus:outline-[#a95530] focus:outline-offset-3 focus:ring-4 focus:ring-[#f1c29b]/80 focus:ring-offset-2 focus:ring-offset-[#fbfaf6] focus-visible:outline-solid focus-visible:outline-3 focus-visible:outline-[#a95530] focus-visible:outline-offset-3 focus-visible:ring-4 focus-visible:ring-[#f1c29b]/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#fbfaf6] sm:w-auto">
@@ -234,7 +239,7 @@ const faqs = [
           <h2 class="mt-3 text-balance text-3xl font-black tracking-[-0.035em] md:text-5xl">
             What Your Website Should Help Customers Do
           </h2>
-          <p class="mt-4 text-lg leading-8 text-[#596861]">Real actions for Colorado Springs service businesses.</p>
+          <p class="mt-4 text-lg leading-8 text-[#596861]">Real actions for Minnesota local service businesses.</p>
         </div>
 
         <div class="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -371,9 +376,9 @@ const faqs = [
         <div class="max-w-3xl">
           <p class="text-xs font-bold uppercase tracking-[0.16em] text-[#7a583a]">Business fit</p>
           <h2 class="mt-3 text-balance text-3xl font-black tracking-[-0.035em] md:text-5xl">
-            Built for Colorado Springs Service Businesses
+            Built for Minnesota Service Businesses
           </h2>
-          <p class="mt-4 text-lg leading-8 text-[#596861]">Different businesses need different customer actions.</p>
+          <p class="mt-4 text-lg leading-8 text-[#596861]">Different businesses need different customer actions — from Northfield taprooms to Twin Cities contractors.</p>
           <p class="mt-4 text-base leading-7 text-[#596861]">
             The same homepage should not serve every business the same way. Contractors need quote details.
             Clinics and consultants need intake. Transportation and service operators may need booking. Event
@@ -406,7 +411,7 @@ const faqs = [
       <div class="max-w-3xl">
         <p class="text-xs font-bold uppercase tracking-[0.16em] text-[#7a583a]">FAQ</p>
         <h2 class="mt-3 text-balance text-3xl font-black tracking-[-0.035em] md:text-5xl">
-          Questions Colorado Springs Business Owners Usually Ask
+          Questions Minnesota Business Owners Usually Ask
         </h2>
       </div>
 
@@ -444,9 +449,14 @@ const faqs = [
   </main>
 
   <footer class="border-t border-stone-200 bg-[#fbfaf6] py-8 text-sm text-[#596861]">
-    <div class="mx-auto flex max-w-6xl flex-col gap-3 px-5 md:flex-row md:items-center md:justify-between">
-      <p><strong class="font-black text-[#22332d]">KMX Media</strong> - Colorado Springs workflow websites.</p>
-      <p>Use the intake to generate your recommended website plan.</p>
+    <div class="mx-auto flex max-w-6xl flex-col gap-4 px-5 md:flex-row md:items-start md:justify-between">
+      <div>
+        <p><strong class="font-black text-[#22332d]">KMX Media</strong> — Northfield &amp; Twin Cities workflow websites.</p>
+        <p class="mt-1">
+          <ContactLinks linkClass="font-semibold text-[#22332d] hover:text-[#a95530]" />
+        </p>
+      </div>
+      <p class="max-w-sm"><a href="/work-request" class="font-semibold text-[#22332d] hover:text-[#a95530]">Start a work request</a> · Urgent repairs from <strong class="text-[#22332d]">$125–$250</strong></p>
     </div>
   </footer>
 </Layout>

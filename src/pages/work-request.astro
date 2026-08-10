@@ -1,0 +1,57 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ContactLinks from '../components/ContactLinks.astro';
+import WorkRequestForm from '../components/work-request/WorkRequestForm.astro';
+import { BRAND } from '../data/work-request-form';
+import { workRequestThemes } from '../data/work-request-theme';
+
+const t = workRequestThemes[BRAND.theme];
+---
+
+<Layout
+  title="Start a Work Request | KMX Media"
+  description="Request website repair, booking systems, AI agents, web apps, or mobile apps. Twin Cities local. No passwords on this form."
+>
+  <main class:list={['min-h-screen', t.page]}>
+    <nav class:list={['border-b', t.nav]}>
+      <div class="mx-auto flex max-w-5xl items-center justify-between px-5 py-4">
+        <a href="/" class:list={['font-semibold tracking-tight', t.heading]}>{BRAND.name}</a>
+        <ContactLinks class:list={['text-sm', t.muted, 'hover:opacity-100']} linkClass="hover:opacity-100" />
+      </div>
+    </nav>
+
+    <div class="mx-auto max-w-5xl px-5 py-12 md:py-16">
+      <p class:list={['text-xs font-bold uppercase tracking-[0.2em]', t.eyebrow]}>{BRAND.eyebrow}</p>
+      <h1 class:list={['mt-3 text-4xl font-black tracking-tight md:text-5xl', t.heading]}>Start a Work Request</h1>
+      <p class:list={['mt-4 max-w-2xl text-lg leading-8', t.body]}>
+        Tell us what is going on with your website — or what you want customers to be able to do. We confirm scope and price before any work starts.
+      </p>
+      <p class:list={['mt-3 max-w-2xl text-sm leading-7', t.muted]}>
+        Website fixes, Google Business Profile help, booking systems, AI agents, web apps, custom software, and iPhone/Android apps.
+      </p>
+
+      <div class:list={['mt-8 rounded-2xl border p-6', t.trustPanel]}>
+        <h2 class:list={['text-lg font-bold', t.heading]}>Safe access</h2>
+        <ul class:list={['mt-3 space-y-2 text-sm leading-6', t.body]}>
+          <li>Work request only — <strong>not</strong> an automatic charge.</li>
+          <li><strong>Do not</strong> enter website or hosting passwords here.</li>
+          <li>Temporary admin access or a secure link <strong>after</strong> we agree on scope.</li>
+        </ul>
+      </div>
+
+      <p class:list={['mt-6 text-sm', t.muted]}>
+        Examples:{' '}
+        {BRAND.proofSites.map((site, i) => (
+          <>
+            {i > 0 && ' · '}
+            <a href={site.href} class={t.link}>{site.label}</a>
+          </>
+        ))}
+      </p>
+
+      <div class="mt-12">
+        <WorkRequestForm />
+      </div>
+    </div>
+  </main>
+</Layout>

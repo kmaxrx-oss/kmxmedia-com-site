@@ -1,0 +1,45 @@
+---
+import { workRequestThemes, type WorkRequestThemeId } from '../../data/work-request-theme';
+
+interface Props {
+  variant: 'mobile' | 'desktop';
+  theme?: WorkRequestThemeId;
+}
+
+const { variant, theme = 'starglass' } = Astro.props;
+const t = workRequestThemes[theme];
+---
+
+<aside
+  class:list={[
+    t.panel,
+    variant === 'mobile' ? 'lg:hidden' : 'hidden lg:sticky lg:top-6 lg:block',
+  ]}
+  data-wr-panel
+  aria-live="polite"
+>
+  <p class:list={['text-xs font-bold uppercase tracking-[0.16em]', t.panelEyebrow]}>Suggested path</p>
+  <h3 class="mt-2 text-xl font-bold" data-wr-heading>Start with your answers</h3>
+  <p class="mt-2 text-sm leading-6 opacity-90" data-wr-summary>
+    Pick an entry path and what you need help with — a starting package will appear here.
+  </p>
+
+  <dl class="mt-5 space-y-4 text-sm">
+    <div>
+      <dt class="font-semibold">Starting package</dt>
+      <dd class:list={['mt-1', t.panelAccent]} data-wr-package>Not selected yet</dd>
+    </div>
+    <div>
+      <dt class="font-semibold">Typical phased path</dt>
+      <dd class="mt-1 leading-6 opacity-90" data-wr-phased>—</dd>
+    </div>
+    <div>
+      <dt class="font-semibold">Next step after delivery</dt>
+      <dd class="mt-1 leading-6 opacity-75" data-wr-next>—</dd>
+    </div>
+  </dl>
+
+  <p class="mt-5 text-xs leading-5 opacity-60">
+    Guide only — not a quote or charge. We confirm scope and price after reviewing your request.
+  </p>
+</aside>

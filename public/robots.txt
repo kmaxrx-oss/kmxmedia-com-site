@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /operator/
+Disallow: /approve/
+Disallow: /pay/
 
 Sitemap: https://kmxmedia.com/sitemap.xml

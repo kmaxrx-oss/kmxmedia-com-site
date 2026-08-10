@@ -14,13 +14,11 @@ const businessTypes = [
 ];
 
 const customerAreas = [
-  'Colorado Springs',
-  'Monument',
-  'Falcon',
-  'Fountain',
-  'Manitou Springs',
-  'Black Forest',
-  'Security-Widefield',
+  'Northfield',
+  'Twin Cities metro',
+  'Rochester',
+  'Faribault / Owatonna area',
+  'Southern Minnesota',
   'Other nearby areas',
 ];
 
@@ -384,6 +382,8 @@ const checkboxClass = 'kmx-choice-card flex min-h-12 cursor-pointer items-start 
     const domainStatus = fieldValue('domain_status');
     const domainName = fieldValue('domain_name');
     const launchWindow = fieldValue('launch_window');
+    const currentProblem = fieldValue('current_problem').toLowerCase();
+    const urgentRepair = /broken|error|ssl|https|http|down|crash|white screen|critical|not working|doesn't load|wont load/.test(currentProblem);
 
     const booking = hasBookingSignal(actions, bookingNeed);
     const quoteIntake = hasQuoteIntakeSignal(actions, intakeNeed);
@@ -392,8 +392,9 @@ const checkboxClass = 'kmx-choice-card flex min-h-12 cursor-pointer items-start 
     const automationSelected = automation.length > 0;
 
     let packageDirection = 'Starter Workflow Homepage';
-    if (booking || quoteIntake) packageDirection = 'Conversion Intake Site';
-    if (local) packageDirection = 'Workflow + Local SEO Site';
+    if (urgentRepair) packageDirection = 'Urgent Repair + Workflow Plan (from ~$250)';
+    else if (booking || quoteIntake) packageDirection = 'Conversion Intake Site';
+    else if (local) packageDirection = 'Workflow + Local SEO Site';
 
     const addons: string[] = [];
     if (local) addons.push('Local SEO / GBP');
@@ -504,7 +505,7 @@ const checkboxClass = 'kmx-choice-card flex min-h-12 cursor-pointer items-start 
       followup_method: fieldValue('followup_method'),
       recommendation: buildRecommendation(),
       submitted_at: new Date().toISOString(),
-      _note: 'PLACEHOLDER_SUBMIT - not transmitted. Generated locally from homepage v2 intake.',
+      _note: 'PLACEHOLDER_SUBMIT - not transmitted. Generated locally from homepage v3 intake.',
     };
   }
 

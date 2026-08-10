@@ -1,0 +1,548 @@
+---
+import WorkRequestRecommendationPanel from './WorkRequestRecommendationPanel.astro';
+import {
+  BRAND,
+  entryPaths,
+  needGroups,
+  packages,
+  urgencyOptions,
+  contactMethods,
+  customerActions,
+  agentHelpOptions,
+  agentReviewOptions,
+  agentConnectOptions,
+  buildTypeOptions,
+  appPriorityOptions,
+  timelineOptions,
+  accessComfortOptions,
+  paymentOptions,
+  detailTriggerPackages,
+} from '../../data/work-request-form';
+import { workRequestThemes, type WorkRequestThemeId } from '../../data/work-request-theme';
+
+interface Props {
+  theme?: WorkRequestThemeId;
+}
+
+const { theme = BRAND.theme } = Astro.props;
+const t = workRequestThemes[theme];
+const formEndpoint = import.meta.env.PUBLIC_WORK_REQUEST_ENDPOINT ?? '';
+
+const fieldShell = t.fieldShell;
+const labelClass = t.label;
+const helperClass = t.helper;
+const inputClass = t.input;
+const choiceClass = t.choice;
+const checkboxInput = t.checkbox;
+---
+
+<form
+  id="work-request-form"
+  class="grid gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(280px,0.75fr)]"
+  method="post"
+  data-form-endpoint={formEndpoint}
+  data-brand-name={BRAND.name}
+  data-site-source={BRAND.siteSource}
+  data-brand-email={BRAND.email}
+  data-brand-phone={BRAND.phone}
+  data-brand-phone-label={BRAND.contact.phoneLabel}
+  data-brand-sms-label={BRAND.contact.smsLabel}
+  data-brand-email-label={BRAND.contact.emailLabel}
+  data-theme={theme}
+  novalidate
+>
+  <div class="space-y-6">
+    <div id="wr-form-status" class="hidden rounded-xl border px-4 py-3 text-sm" role="alert"></div>
+
+    <WorkRequestRecommendationPanel variant="mobile" theme={theme} />
+
+    <!-- Section 1: Business info -->
+    <fieldset class={fieldShell}>
+      <legend class={labelClass}>1. Your business</legend>
+      <p class={helperClass}>So we can reply with the right scope and price.</p>
+      <div class="mt-4 grid gap-4 sm:grid-cols-2">
+        <div class="sm:col-span-2">
+          <label for="business_name" class="text-sm font-semibold text-slate-200">Business name *</label>
+          <input id="business_name" name="business_name" required class={inputClass} autocomplete="organization" />
+        </div>
+        <div>
+          <label for="contact_name" class="text-sm font-semibold text-slate-200">Contact name *</label>
+          <input id="contact_name" name="contact_name" required class={inputClass} autocomplete="name" />
+        </div>
+        <div>
+          <label for="work_email" class="text-sm font-semibold text-slate-200">Email *</label>
+          <input id="work_email" name="work_email" type="email" required class={inputClass} autocomplete="email" />
+        </div>
+        <div>
+          <label for="phone" class="text-sm font-semibold text-slate-200">Phone</label>
+          <input id="phone" name="phone" type="tel" class={inputClass} autocomplete="tel" />
+        </div>
+        <div>
+          <label for="contact_method" class="text-sm font-semibold text-slate-200">Best way to reach you *</label>
+          <select id="contact_method" name="contact_method" required class={inputClass}>
+            <option value="">Select one</option>
+            {contactMethods.map((o) => <option value={o}>{o}</option>)}
+          </select>
+        </div>
+        <div>
+          <label for="urgency" class="text-sm font-semibold text-slate-200">How soon? *</label>
+          <select id="urgency" name="urgency" required class={inputClass}>
+            <option value="">Select one</option>
+            {urgencyOptions.map((o) => <option value={o}>{o}</option>)}
+          </select>
+        </div>
+        <div class="sm:col-span-2">
+          <label for="website_url" class="text-sm font-semibold text-slate-200">Website URL</label>
+          <input id="website_url" name="website_url" type="url" class={inputClass} placeholder="https://" />
+          <label class={`${choiceClass} mt-3`}>
+            <input type="checkbox" id="no_website" name="no_website" value="yes" class={checkboxInput} />
+            <span>We don't have a website yet</span>
+          </label>
+        </div>
+        <div>
+          <label for="gbp_url" class="text-sm font-semibold text-slate-200">Google Business Profile link</label>
+          <input id="gbp_url" name="gbp_url" type="url" class={inputClass} placeholder="Optional" />
+        </div>
+        <div>
+          <label for="service_area" class="text-sm font-semibold text-slate-200">Service area</label>
+          <input id="service_area" name="service_area" class={inputClass} placeholder="e.g. Northfield, Twin Cities" />
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Section 2: Entry path -->
+    <fieldset class={fieldShell}>
+      <legend class={labelClass}>2. Why are you here?</legend>
+      <p class={helperClass}>Pick the closest fit. You can change the package below.</p>
+      <div class="mt-4 grid gap-3">
+        {entryPaths.map((path) => (
+          <label class={choiceClass}>
+            <input type="radio" name="entry_path" value={path.value} required class={checkboxInput} data-default-package={path.defaultPackage} />
+            <span>
+              <span class="font-medium text-white">{path.label}</span>
+              <span class="mt-0.5 block text-xs text-slate-400">{path.hint}</span>
+            </span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+
+    <!-- Section 3: Needs -->
+    <fieldset class={fieldShell}>
+      <legend class={labelClass}>3. What do you need help with?</legend>
+      <p class={helperClass}>Select all that apply.</p>
+      <div class="mt-4 space-y-5">
+        {needGroups.map((group) => (
+          <div>
+            <p class="text-sm font-semibold text-cyan-400/90">{group.title}</p>
+            <div class="mt-2 grid gap-2 sm:grid-cols-2">
+              {group.options.map((opt) => (
+                <label class={choiceClass}>
+                  <input type="checkbox" name="needs[]" value={opt.id} class={checkboxInput} data-need-id={opt.id} />
+                  <span>{opt.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div class="mt-4">
+        <label for="problem_summary" class="text-sm font-semibold text-slate-200">Describe what's going on</label>
+        <textarea id="problem_summary" name="problem_summary" rows={4} class={inputClass} placeholder="In your own words — optional but helpful" />
+      </div>
+    </fieldset>
+
+    <!-- Section 4: Package -->
+    <fieldset class={fieldShell}>
+      <legend class={labelClass}>4. Primary package</legend>
+      <p class={helperClass}>One selection required. Prices are ranges — final quote after review.</p>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        {packages.map((pkg) => (
+          <label class={`${choiceClass} flex-col items-stretch sm:col-span-1`}>
+            <span class="flex items-start gap-3">
+              <input type="radio" name="primary_package" value={pkg.id} required class={checkboxInput} data-package-id={pkg.id} />
+              <span class="flex-1">
+                <span class="font-semibold text-white">{pkg.name}</span>
+                <span class="mt-0.5 block text-sm font-medium text-cyan-400">{pkg.price}</span>
+              </span>
+            </span>
+            <span class="mt-2 pl-7 text-xs leading-5 text-slate-400">{pkg.body}</span>
+            {pkg.helper && <span class="mt-1 pl-7 text-xs italic text-slate-500">{pkg.helper}</span>}
+          </label>
+        ))}
+      </div>
+    </fieldset>
+
+    <!-- Section 5: Conditional details -->
+    <fieldset class={fieldShell} id="wr-section-details" hidden>
+      <legend class={labelClass}>5. Booking, agents & build details</legend>
+      <p class={helperClass}>
+        Typical path: fix the site → booking on the website → AI agents → web or mobile app. We phase it so you are not buying everything at once.
+      </p>
+      <div class="mt-4 space-y-5">
+        <div>
+          <p class="text-sm font-semibold text-slate-200">What should customers be able to do?</p>
+          <div class="mt-2 grid gap-2 sm:grid-cols-2">
+            {customerActions.map((a) => (
+              <label class={choiceClass}>
+                <input type="checkbox" name="customer_actions[]" value={a} class={checkboxInput} />
+                <span>{a}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+        <div>
+          <label for="booking_rules" class="text-sm font-semibold text-slate-200">Booking rules we must respect</label>
+          <textarea id="booking_rules" name="booking_rules" rows={3} class={inputClass} placeholder="Hours, closed days, capacity, phone-only policies" />
+        </div>
+        <div>
+          <label for="current_tools" class="text-sm font-semibold text-slate-200">Currently using for orders/booking</label>
+          <input id="current_tools" name="current_tools" class={inputClass} placeholder="Square, phone, spreadsheet, nothing, etc." />
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-200">What should the agent help with?</p>
+          <div class="mt-2 grid gap-2 sm:grid-cols-2">
+            {agentHelpOptions.map((a) => (
+              <label class={choiceClass}>
+                <input type="checkbox" name="agent_help[]" value={a} class={checkboxInput} />
+                <span>{a}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label for="agent_review" class="text-sm font-semibold text-slate-200">Who reviews before final answers?</label>
+            <select id="agent_review" name="agent_review" class={inputClass}>
+              <option value="">Select</option>
+              {agentReviewOptions.map((o) => <option value={o}>{o}</option>)}
+            </select>
+          </div>
+          <div>
+            <label for="timeline" class="text-sm font-semibold text-slate-200">Timeline</label>
+            <select id="timeline" name="timeline" class={inputClass}>
+              <option value="">Select</option>
+              {timelineOptions.map((o) => <option value={o}>{o}</option>)}
+            </select>
+          </div>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-200">Where should agents connect?</p>
+          <div class="mt-2 flex flex-wrap gap-2">
+            {agentConnectOptions.map((a) => (
+              <label class={`${choiceClass} inline-flex`}>
+                <input type="checkbox" name="agent_connect[]" value={a} class={checkboxInput} />
+                <span>{a}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-200">Build type needed</p>
+          <div class="mt-2 grid gap-2 sm:grid-cols-2">
+            {buildTypeOptions.map((a) => (
+              <label class={choiceClass}>
+                <input type="checkbox" name="build_type[]" value={a} class={checkboxInput} />
+                <span>{a}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label for="ios_priority" class="text-sm font-semibold text-slate-200">iOS app priority</label>
+            <select id="ios_priority" name="ios_priority" class={inputClass}>
+              <option value="">Select</option>
+              {appPriorityOptions.map((o) => <option value={o}>{o}</option>)}
+            </select>
+          </div>
+          <div>
+            <label for="android_priority" class="text-sm font-semibold text-slate-200">Android app priority</label>
+            <select id="android_priority" name="android_priority" class={inputClass}>
+              <option value="">Select</option>
+              {appPriorityOptions.map((o) => <option value={o}>{o}</option>)}
+            </select>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Section 6: Access -->
+    <fieldset class={fieldShell} id="wr-section-access">
+      <legend class={labelClass}>6. Access comfort</legend>
+      <p class={helperClass}>No passwords on this form. We use temporary admin or secure links after scope is approved.</p>
+      <div class="mt-3 grid gap-2 sm:grid-cols-2">
+        {accessComfortOptions.map((a) => (
+          <label class={choiceClass}>
+            <input type="checkbox" name="access_comfort[]" value={a} class={checkboxInput} />
+            <span>{a}</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+
+    <!-- Section 7: Hosting -->
+    <fieldset class={fieldShell} id="wr-section-hosting" hidden>
+      <legend class={labelClass}>7. Hosting & ongoing</legend>
+      <p class={helperClass}>Migration $250 one-time. Care plans $49–$109/mo. GBP management $79–$149/mo.</p>
+      <label class={`${choiceClass} mt-3`}>
+        <input type="checkbox" name="interest_migration" value="yes" class={checkboxInput} />
+        <span>Interested in hosting migration ($250)</span>
+      </label>
+      <label class={`${choiceClass} mt-2`}>
+        <input type="checkbox" name="interest_gbp_manage" value="yes" class={checkboxInput} />
+        <span>Interested in ongoing Google Business Profile management</span>
+      </label>
+    </fieldset>
+
+    <!-- Section 8: Authorization -->
+    <fieldset class={fieldShell}>
+      <legend class={labelClass}>8. Authorization</legend>
+      <div class="mt-3 space-y-2">
+        <label class={choiceClass}>
+          <input type="checkbox" name="auth_work_request" value="yes" required class={checkboxInput} />
+          <span>I understand this starts a work request, not an automatic charge. {BRAND.name} confirms scope and price before work begins.</span>
+        </label>
+        <label class={choiceClass} id="wr-auth-repair">
+          <input type="checkbox" name="auth_repair" value="yes" class={checkboxInput} />
+          <span>I authorize limited access to diagnose and repair the website issues described above.</span>
+        </label>
+      </div>
+    </fieldset>
+
+    <!-- Section 9: Payment -->
+    <fieldset class={fieldShell}>
+      <legend class={labelClass}>9. Payment preference</legend>
+      <div class="mt-3 grid gap-2 sm:grid-cols-2">
+        {paymentOptions.map((a) => (
+          <label class={choiceClass}>
+            <input type="radio" name="payment_preference" value={a} class={checkboxInput} />
+            <span>{a}</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+
+    <input type="hidden" name="suggested_package" id="suggested_package" value="" />
+    <input type="hidden" name="recommendation_json" id="recommendation_json" value="" />
+
+    <button
+      type="submit"
+      class={t.submit}
+    >
+      Submit work request
+    </button>
+  </div>
+
+  <WorkRequestRecommendationPanel variant="desktop" theme={theme} />
+</form>
+
+<script>
+  import { buildWorkRequestRecommendation } from '../../data/work-request-recommendation';
+  import {
+    detailTriggerNeeds,
+    hostingTriggerNeeds,
+    detailTriggerPackages,
+  } from '../../data/work-request-form';
+  import type { EntryPath, PackageId } from '../../data/work-request-form';
+  import { submitWorkRequest } from '../../utils/work-request-submit';
+
+  const form = document.getElementById('work-request-form') as HTMLFormElement | null;
+  const brandName = form?.dataset.brandName ?? 'Star Glass Digital';
+  const siteSource = form?.dataset.siteSource ?? 'starglassdigital.com/work-request';
+  const brandEmail = form?.dataset.brandEmail ?? '';
+  const brandPhone = form?.dataset.brandPhone ?? '';
+  const isKmxTheme = form?.dataset.theme === 'kmx';
+  const statusErrorClass = isKmxTheme
+    ? 'rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800'
+    : 'rounded-xl border border-red-500/50 bg-red-950/50 px-4 py-3 text-sm text-red-200';
+  const statusWarnClass = isKmxTheme
+    ? 'rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800'
+    : 'rounded-xl border border-amber-500/50 bg-amber-950/50 px-4 py-3 text-sm text-amber-200';
+  const statusEl = document.getElementById('wr-form-status');
+  const panels = document.querySelectorAll('[data-wr-panel]');
+  const sectionDetails = document.getElementById('wr-section-details');
+  const sectionHosting = document.getElementById('wr-section-hosting');
+  const authRepair = document.getElementById('wr-auth-repair');
+  const noWebsite = document.getElementById('no_website') as HTMLInputElement | null;
+  const websiteUrl = document.getElementById('website_url') as HTMLInputElement | null;
+  const suggestedHidden = document.getElementById('suggested_package') as HTMLInputElement | null;
+  const recommendationHidden = document.getElementById('recommendation_json') as HTMLInputElement | null;
+
+  function fieldValue(name: string): string {
+    const el = form?.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null;
+    return el?.value?.trim() ?? '';
+  }
+
+  function checkedValues(name: string): string[] {
+    if (!form) return [];
+    return Array.from(form.querySelectorAll<HTMLInputElement>(`input[name="${name}"]:checked`)).map((el) => el.value);
+  }
+
+  function selectedRadio(name: string): string {
+    const el = form?.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`);
+    return el?.value ?? '';
+  }
+
+  function showStatus(message: string, kind: 'error' | 'warn' = 'warn') {
+    if (!statusEl) return;
+    statusEl.textContent = message;
+    statusEl.className = kind === 'error' ? statusErrorClass : statusWarnClass;
+    statusEl.classList.remove('hidden');
+  }
+
+  function hideStatus() {
+    statusEl?.classList.add('hidden');
+  }
+
+  function updateConditionalSections() {
+    const needs = checkedValues('needs[]');
+    const pkg = selectedRadio('primary_package') as PackageId;
+    const showDetails =
+      needs.some((n) => detailTriggerNeeds.has(n)) || (pkg && detailTriggerPackages.has(pkg));
+    const showHosting = needs.some((n) => hostingTriggerNeeds.has(n)) || pkg === 'H';
+    const showRepairAuth = ['A', 'G'].includes(pkg);
+
+    if (sectionDetails) sectionDetails.hidden = !showDetails;
+    if (sectionHosting) sectionHosting.hidden = !showHosting;
+    if (authRepair) authRepair.style.display = showRepairAuth ? '' : 'none';
+  }
+
+  function updateRecommendation() {
+    const rec = buildWorkRequestRecommendation({
+      entryPath: selectedRadio('entry_path') as EntryPath | '',
+      selectedNeeds: checkedValues('needs[]'),
+      selectedPackage: selectedRadio('primary_package') as PackageId | '',
+    });
+
+    if (suggestedHidden) suggestedHidden.value = rec.suggestedPackage;
+    if (recommendationHidden) recommendationHidden.value = JSON.stringify(rec);
+
+    panels.forEach((panel) => {
+      panel.querySelector<HTMLElement>('[data-wr-heading]')!.textContent = rec.packageName;
+      panel.querySelector<HTMLElement>('[data-wr-summary]')!.textContent = rec.rationale;
+      panel.querySelector<HTMLElement>('[data-wr-package]')!.textContent = `${rec.packageName} · ${rec.packagePrice}`;
+      panel.querySelector<HTMLElement>('[data-wr-phased]')!.textContent = rec.phasedPath.join(' → ');
+      panel.querySelector<HTMLElement>('[data-wr-next]')!.textContent = rec.optionalNextStep;
+    });
+
+    const entryPath = selectedRadio('entry_path');
+    const pkgSelected = selectedRadio('primary_package');
+    if (entryPath && !pkgSelected) {
+      const radio = form?.querySelector<HTMLInputElement>(
+        `input[name="primary_package"][data-package-id="${rec.suggestedPackage}"]`,
+      );
+      if (radio && !form?.querySelector('input[name="primary_package"]:checked')) {
+        radio.checked = true;
+      }
+    }
+  }
+
+  function validate(): string | null {
+    if (!fieldValue('business_name')) return 'Business name is required.';
+    if (!fieldValue('contact_name')) return 'Contact name is required.';
+    if (!fieldValue('work_email')) return 'Email is required.';
+    if (!fieldValue('contact_method')) return 'Select your preferred contact method.';
+    if (!fieldValue('urgency')) return 'Select how soon you need help.';
+    if (!selectedRadio('entry_path')) return 'Select why you are here.';
+    if (!selectedRadio('primary_package')) return 'Select a primary package.';
+    if (!checkedValues('auth_work_request').length) return 'Confirm you understand this is a work request, not an automatic charge.';
+    const pkg = selectedRadio('primary_package');
+    if (['A', 'G'].includes(pkg) && !checkedValues('auth_repair').length) {
+      return 'Authorize limited access for diagnose/repair, or choose a different package.';
+    }
+    return null;
+  }
+
+  function collectPayload() {
+    const rec = buildWorkRequestRecommendation({
+      entryPath: selectedRadio('entry_path') as EntryPath | '',
+      selectedNeeds: checkedValues('needs[]'),
+      selectedPackage: selectedRadio('primary_package') as PackageId | '',
+    });
+    return {
+      business_name: fieldValue('business_name'),
+      contact_name: fieldValue('contact_name'),
+      work_email: fieldValue('work_email'),
+      phone: fieldValue('phone'),
+      contact_method: fieldValue('contact_method'),
+      urgency: fieldValue('urgency'),
+      website_url: noWebsite?.checked ? '' : fieldValue('website_url'),
+      no_website: noWebsite?.checked ?? false,
+      gbp_url: fieldValue('gbp_url'),
+      service_area: fieldValue('service_area'),
+      entry_path: selectedRadio('entry_path'),
+      needs: checkedValues('needs[]'),
+      problem_summary: fieldValue('problem_summary'),
+      primary_package: selectedRadio('primary_package'),
+      customer_actions: checkedValues('customer_actions[]'),
+      booking_rules: fieldValue('booking_rules'),
+      current_tools: fieldValue('current_tools'),
+      agent_help: checkedValues('agent_help[]'),
+      agent_review: fieldValue('agent_review'),
+      agent_connect: checkedValues('agent_connect[]'),
+      build_type: checkedValues('build_type[]'),
+      ios_priority: fieldValue('ios_priority'),
+      android_priority: fieldValue('android_priority'),
+      timeline: fieldValue('timeline'),
+      access_comfort: checkedValues('access_comfort[]'),
+      interest_migration: checkedValues('interest_migration').length > 0,
+      interest_gbp_manage: checkedValues('interest_gbp_manage').length > 0,
+      auth_work_request: true,
+      auth_repair: checkedValues('auth_repair').length > 0,
+      payment_preference: fieldValue('payment_preference'),
+      recommendation: rec,
+      submitted_at: new Date().toISOString(),
+      source: siteSource,
+    };
+  }
+
+  if (noWebsite && websiteUrl) {
+    noWebsite.addEventListener('change', () => {
+      websiteUrl.disabled = noWebsite.checked;
+      if (noWebsite.checked) websiteUrl.value = '';
+    });
+  }
+
+  if (form) {
+    const refresh = () => {
+      updateConditionalSections();
+      updateRecommendation();
+    };
+    refresh();
+    form.addEventListener('input', refresh);
+    form.addEventListener('change', refresh);
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      hideStatus();
+      const error = validate();
+      if (error) {
+        showStatus(error, 'error');
+        return;
+      }
+
+      const payload = collectPayload();
+      const endpoint = form.dataset.formEndpoint?.trim();
+
+      if (!endpoint) {
+        sessionStorage.setItem('work_request_payload', JSON.stringify(payload));
+        window.location.href = '/work-request/thanks?mode=local';
+        return;
+      }
+
+      try {
+        await submitWorkRequest(endpoint, payload, brandName);
+        window.location.href = '/work-request/thanks';
+      } catch {
+        const phoneLabel = form?.dataset.brandPhoneLabel ?? 'Phone';
+        const smsLabel = form?.dataset.brandSmsLabel ?? 'Text';
+        const emailLabel = form?.dataset.brandEmailLabel ?? 'Email';
+        const contact = brandPhone && brandEmail
+          ? `Try ${phoneLabel}, ${smsLabel}, or ${emailLabel}.`
+          : 'Try again or contact us directly.';
+        showStatus(`Submit failed. ${contact}`, 'error');
+      }
+    });
+  }
+</script>

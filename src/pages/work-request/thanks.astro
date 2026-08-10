@@ -1,0 +1,65 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ContactLinks from '../../components/ContactLinks.astro';
+import { BRAND } from '../../data/work-request-form';
+
+const mode = Astro.url.searchParams.get('mode');
+---
+
+<Layout
+  title="Request Received | KMX Media"
+  description="Your work request was received. We will reply with scope, price, and next steps."
+>
+  <main class="min-h-screen bg-slate-950 text-slate-100">
+    <nav class="border-b border-slate-800">
+      <div class="mx-auto flex max-w-3xl items-center justify-between px-5 py-4">
+        <a href="/" class="font-semibold tracking-tight text-white">{BRAND.name}</a>
+        <ContactLinks class="text-sm text-slate-400" linkClass="text-slate-400 hover:text-white" />
+      </div>
+    </nav>
+
+    <div class="mx-auto max-w-3xl px-5 py-16 text-center">
+      <p class="text-xs font-bold uppercase tracking-[0.2em] text-cyan-400/90">Thank you</p>
+      <h1 class="mt-3 text-4xl font-black text-white">Request received</h1>
+      <p class="mx-auto mt-4 max-w-lg text-lg leading-8 text-slate-300">
+        We will reply with a confirmed path, price, and phases if applicable. Urgent?{' '}
+        <a href={BRAND.phoneTel} class="font-semibold text-cyan-400 hover:underline">{BRAND.contact.phoneLabel}</a>
+        {' or '}
+        <a href={BRAND.smsTel} class="font-semibold text-cyan-400 hover:underline">{BRAND.contact.smsLabel}</a>.
+      </p>
+
+      {mode === 'local' && (
+        <p class="mx-auto mt-6 max-w-md rounded-xl border border-amber-500/40 bg-amber-950/30 px-4 py-3 text-sm text-amber-200">
+          Form backend not wired yet — your answers were saved locally for this session.{' '}
+          <a href={`mailto:${BRAND.email}`} class="underline">{BRAND.contact.emailLabel}</a> us if you need an immediate response.
+        </p>
+      )}
+
+      <div class="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+        <a
+          href="/"
+          class="rounded-xl border border-slate-600 px-6 py-3 text-sm font-semibold text-slate-200 hover:border-slate-400"
+        >
+          Back to homepage
+        </a>
+        <a
+          href="/work-request"
+          class="rounded-xl bg-cyan-500 px-6 py-3 text-sm font-bold text-slate-950 hover:bg-cyan-400"
+        >
+          Submit another request
+        </a>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  const mode = new URLSearchParams(window.location.search).get('mode');
+  if (mode === 'local') {
+    const raw = sessionStorage.getItem('work_request_payload');
+    if (raw) {
+      console.info('[work-request] local payload', JSON.parse(raw));
+      sessionStorage.removeItem('work_request_payload');
+    }
+  }
+</script>
