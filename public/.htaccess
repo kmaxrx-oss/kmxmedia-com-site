@@ -1,0 +1,22 @@
+# kmxmedia.com — force HTTPS + apex host in one hop.
+# GO 2026-08-24. Do not paste unrelated product notes into this file.
+
+RewriteEngine On
+RewriteBase /
+
+# Retired competing intake. Operator 410 2026-08-24.
+RewriteRule ^work-request(/.*)?$ - [G,L]
+
+RewriteCond %{HTTP_HOST} ^www\.kmxmedia\.com$ [NC,OR]
+RewriteCond %{HTTPS} !=on
+RewriteRule ^(.*)$ https://kmxmedia.com/$1 [R=301,L]
+
+# HTML must revalidate after deploy (DirectoryIndex URLs included).
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|htm)$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+  <Files "index.html">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </Files>
+</IfModule>
