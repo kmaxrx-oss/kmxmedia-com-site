@@ -6,7 +6,7 @@ interface Props {
   description?: string;
 }
 
-const { title, description = "KMX Media builds workflow websites that turn visitors into structured leads, bookings, quotes, and follow-up. Intake systems, local SEO surfaces, and practical AI agents for business operations." } = Astro.props;
+const { title, description = 'KMX Media' } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---

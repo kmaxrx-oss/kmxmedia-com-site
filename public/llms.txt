@@ -1,36 +1,7 @@
 # KMX Media
 
-> Practical local web design, WordPress repair, workflow websites, and AI integration for Minnesota small businesses.
-
-## Services
-
-- Urgent WordPress repairs (SSL/HTTPS, broken pages, plugin conflicts) — typically from $250
-- Workflow websites: calls, bookings, quote requests, customer intake, follow-up
-- Local SEO and Google Business Profile conversion support
-- Booking and reservation systems with business rules (hours, party minimums, capacity)
-- Practical AI workflow agents: first response, routing, reminders, handoff summaries
-- AI-readable site structure (llms.txt, schema, consistent business facts)
-- Website migration to managed hosting ($250 one-time) + hosting and base support ($79–$109/mo, 2–5 support requests/month; standard $89 for 3 requests)
-- Email marketing setup and ongoing web care (optional)
-
-## Service area
-
-Northfield, Twin Cities metro, Rochester, southern Minnesota.
-
-## Operator
-
-KMX Media  
-Phone: 507-602-2949  
-Email: webdev@starglassdigital.com
-
-## Proof site
-
-https://twincitiesshuttle.com — active workflow/booking website.
-
-## Primary website
+Colorado Springs web design, search visibility, booking and intake systems, and website rescue.
 
 https://kmxmedia.com
-
-## How to engage
-
-Use the intake form on the homepage to generate a recommended website plan from your business goals.
+https://kmxmedia.com/start/
+https://kmxmedia.com/colorado-springs-web-design/

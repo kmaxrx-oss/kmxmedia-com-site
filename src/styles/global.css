@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./kmx-tokens.css";
 
 @layer components {
   .kmx-focus-visible:focus,

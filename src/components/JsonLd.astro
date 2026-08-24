@@ -1,77 +1,23 @@
 ---
 const siteUrl = (Astro.site?.toString() || 'https://kmxmedia.com').replace(/\/$/, '');
 const orgId = `${siteUrl}/#organization`;
-const siteId = `${siteUrl}/#website`;
-const pageId = `${siteUrl}/#webpage`;
-const faqId = `${siteUrl}/#faq`;
 
-const faqItems = [
+const faq = [
   {
-    question: 'What does a Minnesota small business website need to do today?',
-    answer:
-      'It should help drive calls, bookings, quote requests, customer intake, and follow-up. Looking modern is useful, but the site also needs to move work forward.',
+    q: 'Do I need to know what kind of website technology I need?',
+    a: 'No. Start with the business outcome, the customer action, and what is not working now. Platform and integration choices come after the requirements are clearer.',
   },
   {
-    question: 'Do I need both a website and a Google Business Profile?',
-    answer:
-      'Usually yes. Google Business Profile helps people find you. The website gives those visitors a clearer path to call, book, request a quote, or send complete details.',
+    q: 'Can KMX build an ordinary business website without automation?',
+    a: 'Yes. Automation, booking, and guided intake are used when they make the customer path clearer. They are not mandatory features for every project.',
   },
   {
-    question: 'Can you build a website that books appointments, rides, or consultations?',
-    answer:
-      'Yes. If booking is part of the workflow, the recommended plan can include a booking or scheduling flow.',
+    q: 'Is the website plan the same as a final proposal?',
+    a: 'No. It is a structured preliminary direction based on the information supplied. Exact scope still depends on the business rules, content, integrations, and existing systems involved.',
   },
   {
-    question: 'Can you add quote request or customer intake forms?',
-    answer:
-      'Yes. Quote and intake forms are core parts of the workflow website model when your team needs better details before responding.',
-  },
-  {
-    question: 'What is a workflow website?',
-    answer:
-      'A workflow website is built around customer actions: collecting the right details, routing them, following up, and making the next step clearer for both sides.',
-  },
-  {
-    question: 'What do AI workflow agents do?',
-    answer:
-      'They can help with first response, missing-info collection, lead qualification, reminders, FAQ replies, and handoff summaries, with human oversight.',
-  },
-  {
-    question: 'Can you improve my current site instead of rebuilding?',
-    answer:
-      'Sometimes. If the current structure can support the workflows you need, optimization may work. If not, a focused rebuild may be faster and clearer.',
-  },
-  {
-    question: 'How long does this take?',
-    answer:
-      'Timeline is blocked until scope is known. The intake gives enough detail to recommend a launch path and discuss timing.',
-  },
-];
-
-const services = [
-  {
-    name: 'Minnesota Workflow Website Design',
-    serviceType: 'Web design / workflow website design',
-    description:
-      'Website design for Minnesota local service businesses, focused on calls, bookings, quote requests, customer intake, follow-up, and cleaner lead details.',
-  },
-  {
-    name: 'Local SEO and Google Business Profile Conversion',
-    serviceType: 'Local SEO / GBP conversion',
-    description:
-      'Website-side local conversion support that helps Google Business Profile visitors move into calls, clicks, bookings, quote requests, or intake details.',
-  },
-  {
-    name: 'Booking, Quote Request, and Customer Intake Systems',
-    serviceType: 'Booking / quote / customer intake systems',
-    description:
-      'Website workflows for appointment scheduling, ride or reservation requests, quote requests, project details, new-client intake, event inquiries, confirmations, and handoff language.',
-  },
-  {
-    name: 'Workflow Automation and AI Workflow Agents',
-    serviceType: 'Workflow automation / AI workflow agents',
-    description:
-      'Practical AI workflow agents and automations for first response, missing-info collection, lead qualification, routing, reminders, customer intake, and clean human handoff.',
+    q: 'What if my current website is broken?',
+    a: 'Begin with Website Repair and Rescue. The repair path asks about availability, symptoms, platform, timing, access, and business impact before asking new-site questions.',
   },
 ];
 
@@ -83,51 +29,25 @@ const schema = {
       '@id': orgId,
       name: 'KMX Media',
       url: siteUrl,
-      description:
-        'KMX Media builds Minnesota workflow websites focused on calls, bookings, quote requests, customer intake, follow-up, local SEO / Google Business Profile conversion, workflow automation, practical AI workflow agents, and urgent WordPress repairs.',
-    },
-    {
-      '@type': 'WebSite',
-      '@id': siteId,
-      url: siteUrl,
-      name: 'KMX Media',
-      publisher: {
-        '@id': orgId,
-      },
+      telephone: '+1-507-602-2949',
+      email: 'webdev@starglassdigital.com',
     },
     {
       '@type': 'WebPage',
-      '@id': pageId,
+      '@id': `${siteUrl}/#webpage`,
       url: siteUrl,
-      name: 'Local Web Design for Minnesota Businesses That Need More Leads',
-      isPartOf: {
-        '@id': siteId,
-      },
-      about: {
-        '@id': orgId,
-      },
+      name: 'Websites That Help Customers Take the Next Step',
+      isPartOf: { '@type': 'WebSite', url: siteUrl, name: 'KMX Media' },
+      about: { '@id': orgId },
       description:
-        'A Minnesota local web design homepage where the intake form and live recommendation panel assemble a workflow website plan for calls, bookings, quote requests, customer intake, local SEO / GBP conversion, automation, AI follow-up, and urgent repairs.',
+        'KMX Media builds Colorado Springs websites for search visibility, bookings, quote requests, customer intake, and clearer follow-up. Start a guided plan.',
     },
-    ...services.map((service) => ({
-      '@type': 'Service',
-      name: service.name,
-      serviceType: service.serviceType,
-      provider: {
-        '@id': orgId,
-      },
-      description: service.description,
-    })),
     {
       '@type': 'FAQPage',
-      '@id': faqId,
-      mainEntity: faqItems.map((item) => ({
+      mainEntity: faq.map((item) => ({
         '@type': 'Question',
-        name: item.question,
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: item.answer,
-        },
+        name: item.q,
+        acceptedAnswer: { '@type': 'Answer', text: item.a },
       })),
     },
   ],

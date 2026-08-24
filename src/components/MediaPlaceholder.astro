@@ -1,0 +1,29 @@
+---
+/**
+ * Medium-gray stand-in. Overlay text is the public caption; label names the future media.
+ */
+interface Props {
+  kind?: 'image' | 'video';
+  label?: string;
+  overlay?: string;
+  size?: 'frame' | 'icon';
+}
+
+const { kind = 'image', label = kind, overlay = '', size = 'frame' } = Astro.props;
+---
+
+<figure class="kmx-media-figure">
+  <div
+    class:list={['kmx-media', size === 'icon' && 'kmx-media--icon']}
+    role="img"
+    aria-label={overlay || label}
+    data-media-kind={kind}
+  >
+    {overlay && size !== 'icon' ? (
+      <p class="kmx-media-overlay">{overlay}</p>
+    ) : (
+      <span class="kmx-media-label">{label}</span>
+    )}
+  </div>
+  {overlay && size !== 'icon' ? <figcaption class="kmx-media-label">{label}</figcaption> : null}
+</figure>
