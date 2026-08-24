@@ -1,8 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ContactLinks from '../components/ContactLinks.astro';
 import JsonLd from '../components/JsonLd.astro';
 import MediaPlaceholder from '../components/MediaPlaceholder.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
 import textureGrid from '../assets/textures/subtle-local-grid.jpg';
 
 const title = 'KMX Media | Colorado Springs Web Design and Workflow Sites';
@@ -37,17 +38,15 @@ const doors = [
 ---
 
 <Layout title={title} description={description}>
-  <JsonLd slot="head" />
+  <JsonLd
+    slot="head"
+    pageUrl="/"
+    pageName="Websites That Help Customers Take the Next Step"
+    description={description}
+    faqs={faqs}
+  />
 
-  <nav class="kmx-section kmx-section--nav">
-    <div class="kmx-section-inner flex items-center justify-between py-4">
-      <a href="#top" class="flex items-center gap-3" aria-label="KMX Media home">
-        <span class="kmx-mark">K</span>
-        <span class="font-semibold tracking-tight text-[var(--kmx-ink)]">KMX Media</span>
-      </a>
-      <a href="/start/" class="kmx-btn-nav kmx-focus-visible">Start My Website Plan</a>
-    </div>
-  </nav>
+  <SiteHeader />
 
   <main id="top" class="kmx-page relative overflow-x-clip" style={`--texture-url: url(${textureGrid.src});`}>
     <div class="pointer-events-none absolute inset-0 bg-[image:var(--texture-url)] bg-[length:520px_auto] opacity-[0.035]"></div>
@@ -191,17 +190,5 @@ const doors = [
     </section>
   </main>
 
-  <footer class="kmx-section kmx-section--site-footer">
-    <div class="kmx-section-inner flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-      <div>
-        <p><strong class="font-black text-[var(--kmx-ink)]">KMX Media</strong> - Colorado Springs web design and workflow sites.</p>
-        <p class="mt-1">
-          <ContactLinks linkClass="font-semibold text-[var(--kmx-ink)] hover:text-[var(--kmx-copper-deep)]" />
-        </p>
-      </div>
-      <p>
-        <a href="/start/" class="font-semibold text-[var(--kmx-ink)] hover:text-[var(--kmx-copper-deep)]">Start My Website Plan</a>
-      </p>
-    </div>
-  </footer>
+  <SiteFooter />
 </Layout>

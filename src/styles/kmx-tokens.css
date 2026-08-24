@@ -129,6 +129,15 @@
   color: var(--kmx-choice);
 }
 
+@media (max-width: 640px) {
+  .kmx-btn-nav {
+    font-size: 0.625rem;
+    letter-spacing: 0.06em;
+    padding: 0.4rem 0.65rem;
+    white-space: nowrap;
+  }
+}
+
 .kmx-shell {
   border: 1px solid var(--kmx-line);
   background: color-mix(in srgb, var(--kmx-white) 80%, transparent);
@@ -296,4 +305,21 @@
   border: 1px solid var(--kmx-line);
   background: var(--kmx-white);
   padding: 1.25rem;
+}
+
+.kmx-prose p + p {
+  margin-top: 1rem;
+}
+
+.kmx-prose a {
+  font-weight: 600;
+  color: var(--kmx-copper-deep);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: var(--kmx-peach-line);
+}
+
+.kmx-prose--on-ink a {
+  color: #fff;
+  text-decoration-color: var(--kmx-peach-line);
 }

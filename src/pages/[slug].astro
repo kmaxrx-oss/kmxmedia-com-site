@@ -1,0 +1,21 @@
+---
+import LaunchPage from '../components/LaunchPage.astro';
+import { loadCopyPages, type CopyPage } from '../lib/copy-page';
+
+export function getStaticPaths() {
+  return loadCopyPages()
+    .filter((page) => page.slug !== 'home')
+    .map((page) => ({
+      params: { slug: page.slug },
+      props: { page },
+    }));
+}
+
+interface Props {
+  page: CopyPage;
+}
+
+const { page } = Astro.props;
+---
+
+<LaunchPage page={page} />

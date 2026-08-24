@@ -11,8 +11,8 @@ const { class: className = '', linkClass = '' } = Astro.props;
 
 <span class={className}>
   <a href={BRAND.phoneTel} class={linkClass}>{BRAND.contact.phoneLabel}</a>
-  {' · '}
+  {' - '}
   <a href={BRAND.smsTel} class={linkClass}>{BRAND.contact.smsLabel}</a>
-  {' · '}
+  {' - '}
   <a href={`mailto:${BRAND.email}`} class={linkClass}>{BRAND.contact.emailLabel}</a>
 </span>

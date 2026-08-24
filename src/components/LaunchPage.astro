@@ -1,0 +1,159 @@
+---
+import Layout from '../layouts/Layout.astro';
+import JsonLd from './JsonLd.astro';
+import MediaPlaceholder from './MediaPlaceholder.astro';
+import SiteFooter from './SiteFooter.astro';
+import SiteHeader from './SiteHeader.astro';
+import textureGrid from '../assets/textures/subtle-local-grid.jpg';
+import {
+  LANE_EYEBROW,
+  PROOF_SITES,
+  START_DOORS,
+  pageNameForUrl,
+  type CopyPage,
+} from '../lib/copy-page';
+
+interface Props {
+  page: CopyPage;
+}
+
+const { page } = Astro.props;
+const eyebrow = LANE_EYEBROW[page.lane] || page.name;
+const heroMedia = page.overlays[0];
+const secondMedia = page.overlays[1];
+const h2s = page.headings.filter((item) => item.level === 2);
+const firstH2 = h2s[0]?.text;
+const lastH2 = h2s.length > 1 ? h2s[h2s.length - 1]?.text : undefined;
+const extraH2s =
+  page.slug === 'start' ? [] : h2s.slice(1, Math.max(1, h2s.length - 1)).map((item) => item.text);
+const firstH3s = (() => {
+  const start = page.headings.findIndex((item) => item.level === 2);
+  if (start < 0) return [];
+  const items: string[] = [];
+  for (let i = start + 1; i < page.headings.length; i += 1) {
+    if (page.headings[i].level === 2) break;
+    items.push(page.headings[i].text);
+  }
+  return items;
+})();
+const related = page.internalLinks.filter((href) => href !== '/start/' && href !== page.url);
+const doorCards =
+  page.slug === 'start' ? START_DOORS : page.slug === 'work' ? PROOF_SITES : firstH3s.map((h3) => ({ href: '', h3 }));
+const continueLabel = page.slug === 'work' ? 'View site' : 'Continue';
+---
+
+<Layout title={page.title} description={page.description}>
+  <JsonLd
+    slot="head"
+    pageUrl={page.url}
+    pageName={page.h1}
+    description={page.description}
+    faqs={page.faqs}
+  />
+
+  <SiteHeader ctaHref={page.startHref} />
+
+  <main id="top" class="kmx-page relative overflow-x-clip" style={`--texture-url: url(${textureGrid.src});`}>
+    <div class="pointer-events-none absolute inset-0 bg-[image:var(--texture-url)] bg-[length:520px_auto] opacity-[0.035]"></div>
+
+    <header class="kmx-section kmx-section--hero">
+      <div class="kmx-section-inner grid gap-10 py-14 md:py-20 lg:grid-cols-[1fr_0.85fr] lg:items-center">
+        <div>
+          <p class="kmx-eyebrow">{eyebrow}</p>
+          <h1 class="kmx-display mt-5 max-w-4xl text-4xl sm:text-5xl md:text-6xl">{page.h1}</h1>
+          <div class="kmx-prose mt-5 max-w-3xl text-lg leading-8 text-[var(--kmx-body-2)]" set:html={page.topHtml} />
+          <div class="mt-8">
+            <a href={page.startHref} class="kmx-btn-primary kmx-focus-visible w-full sm:w-auto">{page.primaryAction}</a>
+          </div>
+        </div>
+        {heroMedia && (
+          <MediaPlaceholder kind={heroMedia.kind} label={heroMedia.label} overlay={heroMedia.overlay} />
+        )}
+      </div>
+    </header>
+
+    {doorCards.length > 0 && (
+      <section class="kmx-section kmx-section--outcome-cards kmx-band-paper">
+        <div class="kmx-section-inner py-12 md:py-16">
+          {firstH2 && (
+            <>
+              <p class="kmx-eyebrow">start here</p>
+              <h2 class="kmx-h2 mt-3 text-3xl md:text-5xl">{firstH2}</h2>
+            </>
+          )}
+          <div class="mt-8 grid gap-4 md:grid-cols-2">
+            {doorCards.map((door) => (
+              <article class="kmx-card">
+                <h3 class="text-xl font-black tracking-[-0.02em] text-[var(--kmx-ink)]">{door.h3}</h3>
+                {door.href ? (
+                  <a class="mt-4 inline-block font-semibold text-[var(--kmx-copper-deep)]" href={door.href}>
+                    {continueLabel}
+                  </a>
+                ) : null}
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <section class="kmx-section kmx-section--split-media kmx-section-inner py-12 md:py-16">
+      <div class="kmx-split">
+        <div>
+          {extraH2s.map((heading) => (
+            <h2 class="kmx-h2 mt-8 first:mt-0 text-3xl md:text-5xl">{heading}</h2>
+          ))}
+          {!extraH2s.length && firstH2 && doorCards.length === 0 && (
+            <h2 class="kmx-h2 text-3xl md:text-5xl">{firstH2}</h2>
+          )}
+          <div class="kmx-prose mt-4 text-lg leading-8 text-[var(--kmx-body-2)]" set:html={page.middleHtml} />
+        </div>
+        {secondMedia && (
+          <MediaPlaceholder kind={secondMedia.kind} label={secondMedia.label} overlay={secondMedia.overlay} />
+        )}
+      </div>
+    </section>
+
+    {related.length > 0 && (
+      <section class="kmx-section kmx-section-inner pb-4">
+        <p class="kmx-eyebrow">continue</p>
+        <ul class="mt-4 flex flex-wrap gap-x-6 gap-y-2">
+          {related.map((href) => (
+            <li>
+              <a class="font-semibold text-[var(--kmx-copper-deep)]" href={href}>{pageNameForUrl(href)}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <section class="kmx-section kmx-section--cta-band">
+      <div class="mx-auto max-w-4xl">
+        <p class="kmx-eyebrow-on-ink">living project brief</p>
+        {lastH2 && <h2 class="kmx-h2 mt-3 text-3xl text-[var(--kmx-cream)] md:text-5xl">{lastH2}</h2>}
+        <div class="kmx-prose kmx-prose--on-ink mx-auto mt-4 max-w-2xl text-lg leading-8 text-[#dbe4df]" set:html={page.bottomHtml} />
+        <a href={page.startHref} class="kmx-btn-primary kmx-focus-visible-dark mt-8 w-full sm:w-auto">{page.primaryAction}</a>
+      </div>
+    </section>
+
+    {page.faqs.length > 0 && (
+      <section id="faq" class="kmx-section kmx-section--faq kmx-section-inner pb-16 pt-12 md:pt-16">
+        <p class="kmx-eyebrow">FAQ</p>
+        <h2 class="kmx-h2 mt-3 text-3xl md:text-5xl">Questions Before You Start</h2>
+        <div class="mt-8 grid gap-4 lg:grid-cols-2">
+          {page.faqs.map((item) => (
+            <details class="kmx-faq-item group">
+              <summary class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 font-bold text-[var(--kmx-ink)] marker:hidden">
+                <span>{item.q}</span>
+                <span class="text-xl leading-none text-[var(--kmx-copper)] transition group-open:rotate-45">+</span>
+              </summary>
+              <p class="mt-3 text-sm leading-6 text-[var(--kmx-body-2)]">{item.a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+    )}
+  </main>
+
+  <SiteFooter ctaHref={page.startHref} />
+</Layout>

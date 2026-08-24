@@ -1,56 +1,55 @@
 ---
+interface FaqItem {
+  q: string;
+  a: string;
+}
+
+interface Props {
+  pageUrl: string;
+  pageName: string;
+  description: string;
+  faqs?: FaqItem[];
+}
+
+const { pageUrl, pageName, description, faqs = [] } = Astro.props;
 const siteUrl = (Astro.site?.toString() || 'https://kmxmedia.com').replace(/\/$/, '');
 const orgId = `${siteUrl}/#organization`;
+const canonical = pageUrl.startsWith('http') ? pageUrl : `${siteUrl}${pageUrl}`;
 
-const faq = [
+const graph: Record<string, unknown>[] = [
   {
-    q: 'Do I need to know what kind of website technology I need?',
-    a: 'No. Start with the business outcome, the customer action, and what is not working now. Platform and integration choices come after the requirements are clearer.',
+    '@type': 'Organization',
+    '@id': orgId,
+    name: 'KMX Media',
+    url: siteUrl,
+    telephone: '+1-507-602-2949',
+    email: 'webdev@starglassdigital.com',
   },
   {
-    q: 'Can KMX build an ordinary business website without automation?',
-    a: 'Yes. Automation, booking, and guided intake are used when they make the customer path clearer. They are not mandatory features for every project.',
-  },
-  {
-    q: 'Is the website plan the same as a final proposal?',
-    a: 'No. It is a structured preliminary direction based on the information supplied. Exact scope still depends on the business rules, content, integrations, and existing systems involved.',
-  },
-  {
-    q: 'What if my current website is broken?',
-    a: 'Begin with Website Repair and Rescue. The repair path asks about availability, symptoms, platform, timing, access, and business impact before asking new-site questions.',
+    '@type': 'WebPage',
+    '@id': `${canonical}#webpage`,
+    url: canonical,
+    name: pageName,
+    isPartOf: { '@type': 'WebSite', url: siteUrl, name: 'KMX Media' },
+    about: { '@id': orgId },
+    description,
   },
 ];
 
+if (faqs.length > 0) {
+  graph.push({
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: { '@type': 'Answer', text: item.a },
+    })),
+  });
+}
+
 const schema = {
   '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'Organization',
-      '@id': orgId,
-      name: 'KMX Media',
-      url: siteUrl,
-      telephone: '+1-507-602-2949',
-      email: 'webdev@starglassdigital.com',
-    },
-    {
-      '@type': 'WebPage',
-      '@id': `${siteUrl}/#webpage`,
-      url: siteUrl,
-      name: 'Websites That Help Customers Take the Next Step',
-      isPartOf: { '@type': 'WebSite', url: siteUrl, name: 'KMX Media' },
-      about: { '@id': orgId },
-      description:
-        'KMX Media builds Colorado Springs websites for search visibility, bookings, quote requests, customer intake, and clearer follow-up. Start a guided plan.',
-    },
-    {
-      '@type': 'FAQPage',
-      mainEntity: faq.map((item) => ({
-        '@type': 'Question',
-        name: item.q,
-        acceptedAnswer: { '@type': 'Answer', text: item.a },
-      })),
-    },
-  ],
+  '@graph': graph,
 };
 ---
 

@@ -1,0 +1,24 @@
+---
+import ContactLinks from './ContactLinks.astro';
+
+interface Props {
+  ctaHref?: string;
+  ctaLabel?: string;
+}
+
+const { ctaHref = '/start/', ctaLabel = 'Start My Website Plan' } = Astro.props;
+---
+
+<footer class="kmx-section kmx-section--site-footer">
+  <div class="kmx-section-inner flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+    <div>
+      <p><strong class="font-black text-[var(--kmx-ink)]">KMX Media</strong> - Colorado Springs web design and workflow sites.</p>
+      <p class="mt-1">
+        <ContactLinks linkClass="font-semibold text-[var(--kmx-ink)] hover:text-[var(--kmx-copper-deep)]" />
+      </p>
+    </div>
+    <p>
+      <a href={ctaHref} class="font-semibold text-[var(--kmx-ink)] hover:text-[var(--kmx-copper-deep)]">{ctaLabel}</a>
+    </p>
+  </div>
+</footer>

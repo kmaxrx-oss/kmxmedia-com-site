@@ -1,0 +1,21 @@
+---
+interface Props {
+  ctaHref?: string;
+  ctaLabel?: string;
+}
+
+const { ctaHref = '/start/', ctaLabel = 'Start My Website Plan' } = Astro.props;
+---
+
+<nav class="kmx-section kmx-section--nav">
+  <div class="kmx-section-inner flex items-center justify-between py-4">
+    <a href="/" class="flex items-center gap-3" aria-label="KMX Media home">
+      <span class="kmx-mark">K</span>
+      <span class="font-semibold tracking-tight text-[var(--kmx-ink)]">KMX Media</span>
+    </a>
+    <a href={ctaHref} class="kmx-btn-nav kmx-focus-visible">
+      <span class="hidden sm:inline">{ctaLabel}</span>
+      <span class="sm:hidden">Start</span>
+    </a>
+  </div>
+</nav>
