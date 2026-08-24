@@ -5,6 +5,7 @@ import MediaPlaceholder from '../components/MediaPlaceholder.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import textureGrid from '../assets/textures/subtle-local-grid.jpg';
+import { OWNER_DOORS } from '../lib/copy-page';
 
 const title = 'KMX Media | Colorado Springs Web Design and Workflow Sites';
 const description =
@@ -29,12 +30,13 @@ const faqs = [
   },
 ];
 
-const doors = [
-  { href: '/colorado-springs-web-design/', h3: 'Build or Redesign a Website' },
-  { href: '/search-engine-optimization/', h3: 'Improve Search Visibility and Conversion' },
-  { href: '/custom-booking-systems/', h3: 'Add Booking, Quote, or Customer Intake' },
-  { href: '/website-repair-rescue/', h3: 'Repair or Take Responsibility for an Existing Site' },
+const doorTitles = [
+  'Build or Redesign a Website',
+  'Improve Search Visibility and Conversion',
+  'Add Booking, Quote, or Customer Intake',
+  'Repair or Take Responsibility for an Existing Site',
 ];
+const doors = OWNER_DOORS.map((door, index) => ({ href: door.href, h3: doorTitles[index] }));
 ---
 
 <Layout title={title} description={description}>

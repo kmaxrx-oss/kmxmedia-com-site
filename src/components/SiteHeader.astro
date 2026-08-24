@@ -1,21 +1,62 @@
 ---
+import { OWNER_DOORS, WORK_LINK } from '../lib/copy-page';
+
 interface Props {
   ctaHref?: string;
   ctaLabel?: string;
 }
 
 const { ctaHref = '/start/', ctaLabel = 'Start My Website Plan' } = Astro.props;
+const currentPath = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const navItems = [...OWNER_DOORS, WORK_LINK];
 ---
 
-<nav class="kmx-section kmx-section--nav">
-  <div class="kmx-section-inner flex items-center justify-between py-4">
+<header class="kmx-section kmx-section--nav">
+  <div class="kmx-section-inner flex flex-wrap items-center justify-between gap-3 py-4">
     <a href="/" class="flex items-center gap-3" aria-label="KMX Media home">
       <span class="kmx-mark">K</span>
       <span class="font-semibold tracking-tight text-[var(--kmx-ink)]">KMX Media</span>
     </a>
-    <a href={ctaHref} class="kmx-btn-nav kmx-focus-visible">
-      <span class="hidden sm:inline">{ctaLabel}</span>
-      <span class="sm:hidden">Start</span>
-    </a>
+
+    <nav class="kmx-primary-nav hidden min-w-0 flex-1 md:block" aria-label="Primary">
+      <ul class="kmx-primary-nav__list">
+        {navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="kmx-primary-nav__link kmx-focus-visible"
+              aria-current={currentPath === item.href ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <details class="kmx-nav-disclosure md:hidden">
+        <summary class="kmx-btn-nav kmx-focus-visible">Menu</summary>
+        <nav class="kmx-nav-disclosure__panel" aria-label="Primary">
+          <ul>
+            {navItems.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class="kmx-primary-nav__link kmx-focus-visible"
+                  aria-current={currentPath === item.href ? 'page' : undefined}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </details>
+      <a href={ctaHref} class="kmx-btn-nav kmx-focus-visible">
+        <span class="hidden sm:inline">{ctaLabel}</span>
+        <span class="sm:hidden">Start</span>
+      </a>
+    </div>
   </div>
-</nav>
+</header>

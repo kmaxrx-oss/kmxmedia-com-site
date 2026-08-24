@@ -1,5 +1,6 @@
 ---
 import ContactLinks from './ContactLinks.astro';
+import { OWNER_DOORS, WORK_LINK } from '../lib/copy-page';
 
 interface Props {
   ctaHref?: string;
@@ -7,18 +8,44 @@ interface Props {
 }
 
 const { ctaHref = '/start/', ctaLabel = 'Start My Website Plan' } = Astro.props;
+const currentPath = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const navItems = [...OWNER_DOORS, WORK_LINK];
 ---
 
 <footer class="kmx-section kmx-section--site-footer">
-  <div class="kmx-section-inner flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+  <div class="kmx-section-inner grid gap-8 md:grid-cols-[1.2fr_1fr_auto]">
     <div>
-      <p><strong class="font-black text-[var(--kmx-ink)]">KMX Media</strong> - Colorado Springs web design and workflow sites.</p>
-      <p class="mt-1">
+      <p>
+        <strong class="font-black text-[var(--kmx-ink)]">KMX Media</strong>
+        - Colorado Springs web design and workflow sites.
+      </p>
+      <p class="mt-2">
         <ContactLinks linkClass="font-semibold text-[var(--kmx-ink)] hover:text-[var(--kmx-copper-deep)]" />
       </p>
     </div>
-    <p>
-      <a href={ctaHref} class="font-semibold text-[var(--kmx-ink)] hover:text-[var(--kmx-copper-deep)]">{ctaLabel}</a>
+    <nav aria-label="Footer">
+      <ul class="flex flex-col gap-2">
+        {navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="font-semibold text-[var(--kmx-ink)] hover:text-[var(--kmx-copper-deep)]"
+              aria-current={currentPath === item.href ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+        <li>
+          <a href={ctaHref} class="font-semibold text-[var(--kmx-ink)] hover:text-[var(--kmx-copper-deep)]">
+            {ctaLabel}
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <p class="flex flex-col gap-2">
+      <a href="/sitemap.xml" class="font-semibold text-[var(--kmx-ink)] hover:text-[var(--kmx-copper-deep)]">Sitemap</a>
+      <a href="/llms.txt" class="font-semibold text-[var(--kmx-ink)] hover:text-[var(--kmx-copper-deep)]">llms.txt</a>
     </p>
   </div>
 </footer>

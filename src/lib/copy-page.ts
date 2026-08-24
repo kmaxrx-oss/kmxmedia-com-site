@@ -243,11 +243,20 @@ export const LANE_EYEBROW: Record<string, string> = {
   home: 'Colorado Springs web design',
 };
 
+export const OWNER_DOORS = [
+  { href: '/colorado-springs-web-design/', label: 'Website or Redesign' },
+  { href: '/search-engine-optimization/', label: 'Visibility and Conversion' },
+  { href: '/custom-booking-systems/', label: 'Booking and Intake' },
+  { href: '/website-repair-rescue/', label: 'Repair and Support' },
+] as const;
+
+export const WORK_LINK = { href: '/work/', label: 'Work' } as const;
+
 export const START_DOORS = [
-  { href: '/colorado-springs-web-design/', h3: 'New Website or Redesign' },
-  { href: '/website-conversion-optimization/', h3: 'Visibility and Website Conversion' },
-  { href: '/custom-booking-systems/', h3: 'Booking, Quote, Intake, or Automation' },
-  { href: '/website-repair-rescue/', h3: 'Website Repair and Continuing Care' },
+  { href: OWNER_DOORS[0].href, h3: 'New Website or Redesign' },
+  { href: OWNER_DOORS[1].href, h3: 'Visibility and Website Conversion' },
+  { href: OWNER_DOORS[2].href, h3: 'Booking, Quote, Intake, or Automation' },
+  { href: OWNER_DOORS[3].href, h3: 'Website Repair and Continuing Care' },
 ];
 
 export const PROOF_SITES = [
