@@ -4,9 +4,6 @@
 RewriteEngine On
 RewriteBase /
 
-# Retired competing intake. Operator 410 2026-08-24.
-RewriteRule ^work-request(/.*)?$ - [G,L]
-
 # Retired pre-rebuild WordPress/crawl paths. Operator 410 2026-08-24.
 RewriteRule ^homepage(/.*)?$ - [G,L]
 
