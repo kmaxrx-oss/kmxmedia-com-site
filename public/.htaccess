@@ -7,6 +7,9 @@ RewriteBase /
 # Retired pre-rebuild WordPress/crawl paths. Operator 410 2026-08-24.
 RewriteRule ^homepage(/.*)?$ - [G,L]
 
+# Thank-you URL retired from public/index. Operator 410 2026-08-24.
+RewriteRule ^work-request/thanks(/.*)?$ - [G,L]
+
 RewriteCond %{HTTP_HOST} ^www\.kmxmedia\.com$ [NC,OR]
 RewriteCond %{HTTPS} !=on
 RewriteRule ^(.*)$ https://kmxmedia.com/$1 [R=301,L]
